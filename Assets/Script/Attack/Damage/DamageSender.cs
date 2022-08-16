@@ -3,7 +3,7 @@ using UnityEngine;
 public class DamageSender : PMonoBehaviour
 {
     [Header("Damage Sender")]
-    public float damage = 1;
+    [SerializeField] public float damage = 1;
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
@@ -18,7 +18,7 @@ public class DamageSender : PMonoBehaviour
 
 
     /// <summary>
-    /// Overide for other Damage style
+    /// Overide for other Damage style and effect
     /// </summary>
     protected virtual void AfterDamage()
     {

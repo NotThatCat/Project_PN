@@ -79,7 +79,7 @@ Transform:
   m_Children:
   - {fileID: 1989509974362820757}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1989509974228194781
 GameObject:
@@ -230,7 +230,9 @@ MonoBehaviour:
   - {fileID: 1989509974349444586}
   - {fileID: 1989509972949294962}
   - {fileID: 1989509974228194780}
+  - {fileID: 7308409157248671777}
   waveDatas:
+  - {fileID: 11400000, guid: 0c923b575fa6c0342a59dc7f5ff66bfb, type: 2}
   - {fileID: 11400000, guid: 1d4ca5c2802c4c74d96ef204ee0c9fb4, type: 2}
   - {fileID: 11400000, guid: 32ea5c0d5f85cbf45b81859eafaf9b1a, type: 2}
   - {fileID: 11400000, guid: 515c6a286f8d7c6448b902b4f4c7f82d, type: 2}
@@ -240,6 +242,7 @@ MonoBehaviour:
   - {fileID: 1989509974349444565}
   - {fileID: 1989509972949294973}
   - {fileID: 1989509974228194783}
+  - {fileID: 6733715131008243569}
   currentWave: 0
   isRunningWave: 0
 --- !u!1 &1989509974633525732
@@ -323,6 +326,56 @@ Transform:
   - {fileID: 1989509974349444586}
   - {fileID: 1989509972949294962}
   - {fileID: 1989509974228194780}
+  - {fileID: 7308409157248671777}
   m_Father: {fileID: 1989509974362820757}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3250300881295881263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7308409157248671777}
+  - component: {fileID: 6733715131008243569}
+  m_Layer: 0
+  m_Name: Wave5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7308409157248671777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250300881295881263}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1989509974818501754}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6733715131008243569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250300881295881263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49a8c5eff546574f82cacf2a5d16578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveManager: {fileID: 1989509974362820756}
+  waveData: {fileID: 11400000, guid: 0c923b575fa6c0342a59dc7f5ff66bfb, type: 2}
+  path: {fileID: 0}
+  waveStatus: 0
+  currentIndex: 0

@@ -5,7 +5,7 @@ public class DamageReceiver : PMonoBehaviour
     [Header("Damage Receiver")]
     [SerializeField] protected float hp = 0;
     [SerializeField] protected float maxHp = 1;
-    [SerializeField] protected string takeDamageFrom = "";
+    [SerializeField] protected BULLET_SOURCEDAMAGE takeDamageFrom = BULLET_SOURCEDAMAGE.PLAYER;
 
     protected override void OnEnable()
     {
@@ -47,7 +47,7 @@ public class DamageReceiver : PMonoBehaviour
     /// <param name="damage"></param>
     /// <param name="sourceDamage"></param>
     /// <returns>If damage success</returns>
-    public virtual bool Damaged(float damage, string sourceDamage)
+    public virtual bool Damaged(float damage, BULLET_SOURCEDAMAGE sourceDamage)
     {
         if (sourceDamage == this.takeDamageFrom)
         {

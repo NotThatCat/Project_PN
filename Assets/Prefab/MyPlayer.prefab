@@ -492,7 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCtrl: {fileID: 1338802632600010868}
   animationScale: 0.15
-  speed: 3
+  speed: 4
   position: {x: 0, y: 0}
   limitHorizon: {x: -3.25, y: 3.25}
   limitVertical: {x: 4.5, y: -4.5}
@@ -635,7 +635,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 10
   maxHp: 10
-  takeDamageFrom: Enemy
+  takeDamageFrom: 1
+  effectName: ExploreWhite
 --- !u!61 &1338802633846856684
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -742,7 +743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4083014715217282758, guid: d89b43c516b4d3b45a0facf1538763ee, type: 3}
       propertyPath: m_Name
-      value: DB3_2
+      value: PDefaultBullet3_2
       objectReference: {fileID: 0}
     - target: {fileID: 4083014715217282759, guid: d89b43c516b4d3b45a0facf1538763ee, type: 3}
       propertyPath: m_RootOrder
@@ -869,7 +870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6156075618791360647, guid: 8bd6e53a6b9f1d149ae37bb5bd93eb3a, type: 3}
       propertyPath: m_Name
-      value: DefaultSkill1
+      value: PDefaultBullet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -944,7 +945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8071273688548971137, guid: 3eeea9f67e545c9439986f3006b07c38, type: 3}
       propertyPath: m_Name
-      value: EM1
+      value: PBullet27
       objectReference: {fileID: 0}
     - target: {fileID: 8071273688548971199, guid: 3eeea9f67e545c9439986f3006b07c38, type: 3}
       propertyPath: planeCtrl
@@ -1035,7 +1036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8474453627679902431, guid: dbc3a577e33b25d4a9230a6bf5b5e891, type: 3}
       propertyPath: m_Name
-      value: DB3_1
+      value: PDefaultBullet3_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1110,7 +1111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7819484693690478851, guid: b2675133db64c1345a3470d24a25204b, type: 3}
       propertyPath: m_Name
-      value: DefaultSkill2
+      value: PDefaultBullet2
       objectReference: {fileID: 0}
     - target: {fileID: 7819484693690478853, guid: b2675133db64c1345a3470d24a25204b, type: 3}
       propertyPath: planeCtrl
