@@ -24,6 +24,13 @@ public class InputsManager : PMonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3)) PlayerCtrl.instance.ChangeSkill(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) PlayerCtrl.instance.ChangeSkill(3);
         if (Input.GetKeyDown(KeyCode.Alpha5)) PlayerCtrl.instance.ChangeSkill(4);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) PlayerCtrl.instance.ChangeSkill(5);
+        if (Input.GetKeyDown(KeyCode.Alpha7)) PlayerCtrl.instance.ChangeSkill(6);
+        if (Input.GetKeyDown(KeyCode.Alpha8)) PlayerCtrl.instance.ChangeSkill(7);
+        if (Input.GetKeyDown(KeyCode.Alpha9)) PlayerCtrl.instance.ChangeSkill(8);
+        if (Input.GetKeyDown(KeyCode.Alpha0)) PlayerCtrl.instance.ChangeSkill(9);
+        if (Input.GetKeyDown(KeyCode.Q)) PlayerCtrl.instance.NextSkill(-1);
+        if (Input.GetKeyDown(KeyCode.E)) PlayerCtrl.instance.NextSkill(1);
         if (Input.GetKey(KeyCode.Mouse0)) PlayerCtrl.instance.Attack();
         if (Input.GetKeyDown(KeyCode.A)) PlayerCtrl.instance.playerModelCtrl.level.Down();
         if (Input.GetKeyDown(KeyCode.D)) PlayerCtrl.instance.playerModelCtrl.level.Up();

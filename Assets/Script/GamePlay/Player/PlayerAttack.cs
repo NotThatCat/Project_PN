@@ -32,4 +32,10 @@ public class PlayerAttack : PMonoBehaviour
     {
         this.currentSkill = playerCtrl.playerModelCtrl.attackCtrl.ChangeSkill(idx);
     }
+
+    public virtual void NextSkill(int idx)
+    {
+        if (idx != 1 && idx != -1) return;
+        this.ChangeSkill(this.currentSkill + idx);
+    }
 }

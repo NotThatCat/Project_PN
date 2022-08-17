@@ -26,4 +26,7 @@ public class SkillData : ScriptableObject
     [SerializeField] public bool useSpearNumbers = true;
     [SerializeField] public float spearNumbers = 2;
     [SerializeField] public float bulletRotaFixed = 0.05f;
+
+    [Header("Wave Control")]
+    [SerializeField] public int number = 3;
 }

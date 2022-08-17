@@ -91,7 +91,9 @@ public class AttackCtrl : PMonoBehaviour
 
     public virtual int ChangeSkill(int idx)
     {
+        if (idx >= this.skills.Count) return this.currentSkill;
         this.StopSkill(this.currentSkill);
+        Debug.Log("Skill change to " + skills[idx].name);
         return this.currentSkill = idx;
     }
 }

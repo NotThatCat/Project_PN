@@ -32,8 +32,14 @@ public class SkillCtrl : PMonoBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
+        this.LoadPlanCtrl();
         this.LoadSkillData();
         this.LoadStrikePoint();
+    }
+
+    protected virtual void LoadPlanCtrl()
+    {
+        this.planeCtrl = transform.parent.parent.GetComponent<PlaneCtrl>();
     }
 
     protected virtual void LoadSkillData()
