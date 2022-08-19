@@ -17,7 +17,7 @@ public class BossMoving : MoveByPath
     protected override void Moving()
     {
 
-        float step = this.speed * Time.deltaTime;
+        float step = this.movingSpeed * Time.deltaTime;
         transform.parent.position = Vector3.MoveTowards(
             transform.parent.position,
             this.CurrentCheckPoint().position,
@@ -42,5 +42,10 @@ public class BossMoving : MoveByPath
         }
         this.checkpoints.Add(newTransform);
         this.checkpointIndex = this.checkpoints.Count - 1;
+    }
+    
+    public virtual void ChangeSpeed(float newSpeed)
+    {
+        this.movingSpeed = newSpeed;
     }
 }

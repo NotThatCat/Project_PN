@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillEM1_3 : SkillCtrl
+public class BossSkill : SkillCtrl
 {
     //
     [SerializeField] protected float bulletRotaFixed = 0.05f;

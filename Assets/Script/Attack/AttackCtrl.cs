@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackCtrl : PMonoBehaviour
+public abstract class AttackCtrl : PMonoBehaviour
 {
     [SerializeField] public List<Transform> skills;
     [SerializeField] public List<SkillCtrl> skillCtrls;
@@ -28,6 +28,8 @@ public class AttackCtrl : PMonoBehaviour
 
     protected virtual void LoadSkills()
     {
+        this.skills = new List<Transform>();
+        this.skillCtrls = new List<SkillCtrl>();
         foreach (Transform skill in transform)
         {
             skills.Add(skill);
@@ -91,9 +93,16 @@ public class AttackCtrl : PMonoBehaviour
 
     public virtual int ChangeSkill(int idx)
     {
-        if (idx >= this.skills.Count) return this.currentSkill;
+        if (idx >= this.skills.Count || idx < 0) return this.currentSkill;
         this.StopSkill(this.currentSkill);
-        Debug.Log("Skill change to " + skills[idx].name);
         return this.currentSkill = idx;
     }
+
+    public virtual void NextSkill(int value)
+    {
+        this.ChangeSkill(this.currentSkill + value);
+    }
+
+    public abstract int GetMaxLevel();
+    public abstract int GetCurrentLevel();
 }

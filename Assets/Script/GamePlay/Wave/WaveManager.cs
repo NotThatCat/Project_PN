@@ -10,6 +10,7 @@ public class WaveManager : PMonoBehaviour
     [SerializeField] protected List<WaveCtrl> waveCtrls;
     [SerializeField] public int currentWave = 0;
     [SerializeField] protected bool isRunningWave = false;
+    [SerializeField] protected bool loopAllWave = true;
 
     public static WaveManager instance;
 
@@ -80,8 +81,11 @@ public class WaveManager : PMonoBehaviour
         isRunningWave = false;
 
         yield return new WaitForSeconds(0.5f);
-        this.ResetWave();
-        this.StartWave();
+        if (this.loopAllWave)
+        {
+            this.ResetWave();
+            this.StartWave();
+        }
     }
 
     public virtual WaveData GetWaveData(string name)

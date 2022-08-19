@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,9 @@ public class PlayerCtrl : PMonoBehaviour
 {
     [SerializeField] public static PlayerCtrl instance;
     [SerializeField] public PlayerMoving playerMovingCtrl;
-    [SerializeField] public PlayerAttack playerAttack;
-    [SerializeField] public PlayerPlaneCtrl playerModelCtrl;
+    [SerializeField] public PlayerAttackCtrl playerAttackCtrl;
+    [SerializeField] public PlayerPlaneCtrl playerPlaneCtrl;
+    [SerializeField] public Level level;
 
     protected override void Awake()
     {
@@ -15,17 +17,33 @@ public class PlayerCtrl : PMonoBehaviour
         PlayerCtrl.instance = this;
     }
 
+    public virtual int GetMaxLevel()
+    {
+        return this.level.maxLevel;
+    }
+
+    public virtual int GetCurrentLevel()
+    {
+        return this.level.level;
+    }
+
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        this.LoadPlayerModelCtrl();
+        this.LoadPlayerPlaneCtrl();
         this.LoadPlayerMoving();
         this.LoadPlayerAttack();
+        this.LoadLevel();
     }
 
-    protected virtual void LoadPlayerModelCtrl()
+    protected virtual void LoadLevel()
     {
-        this.playerModelCtrl = transform.GetComponentInChildren<PlayerPlaneCtrl>();
+        this.level = transform.GetComponentInChildren<Level>();
+    }
+
+    protected virtual void LoadPlayerPlaneCtrl()
+    {
+        this.playerPlaneCtrl = transform.GetComponentInChildren<PlayerPlaneCtrl>();
     }
 
     protected virtual void LoadPlayerMoving()
@@ -35,21 +53,36 @@ public class PlayerCtrl : PMonoBehaviour
 
     protected virtual void LoadPlayerAttack()
     {
-        this.playerAttack = transform.GetComponentInChildren<PlayerAttack>();
+        this.playerAttackCtrl = transform.GetComponentInChildren<PlayerAttackCtrl>();
     }
 
     public virtual void ChangeSkill(int idx)
     {
-        this.playerAttack.ChangeSkill(idx);
+        this.playerAttackCtrl.ChangeSkill(idx);
     }
 
     public virtual void NextSkill(int idx)
     {
-        this.playerAttack.NextSkill(idx);
+        this.playerAttackCtrl.NextSkill(idx);
     }
 
     public virtual void Attack()
     {
-        this.playerAttack.Attack();
+        this.playerAttackCtrl.Attack();
+    }
+
+    public virtual void TurnRight()
+    {
+        this.playerPlaneCtrl.planeAnimator.TurnRight();
+    }
+
+    public virtual void TurnLeft()
+    {
+        this.playerPlaneCtrl.planeAnimator.TurnLeft();
+    }
+
+    public virtual void Idle()
+    {
+        this.playerPlaneCtrl.planeAnimator.Idle();
     }
 }

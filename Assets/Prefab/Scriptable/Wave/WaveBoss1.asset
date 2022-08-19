@@ -10,20 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97f9d983b5484414b91c7802203bf633, type: 3}
-  m_Name: Wave1
+  m_Name: WaveBoss1
   m_EditorClassIdentifier: 
-  delayBeforeSpawn: 0
+  delayBeforeSpawn: 5
   spawnBetweenDelay: 0.3
   delayAfterSpawn: 0
   enemyList:
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  pathName: PathCrep_1
+  - BossB1
+  pathName: PathBoss

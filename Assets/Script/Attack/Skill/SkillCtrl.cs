@@ -10,7 +10,7 @@ public class SkillCtrl : PMonoBehaviour
     [SerializeField] protected string strikePointTemplate = "defbullet";
     [SerializeField] protected List<Transform> strikePoints;
 
-    [SerializeField] protected PlaneCtrl planeCtrl;
+    [SerializeField] protected AttackCtrl attackCtrl;
 
     [Header("Attack Status")] // Require reset if Stop Attack
     [SerializeField] protected ATTACK_STATUS attackStatus = ATTACK_STATUS.READY_ATTACK;
@@ -39,7 +39,7 @@ public class SkillCtrl : PMonoBehaviour
 
     protected virtual void LoadPlanCtrl()
     {
-        this.planeCtrl = transform.parent.parent.GetComponent<PlaneCtrl>();
+        this.attackCtrl = transform.GetComponentInParent<AttackCtrl>();
     }
 
     protected virtual void LoadSkillData()
@@ -53,7 +53,6 @@ public class SkillCtrl : PMonoBehaviour
     protected virtual void LoadStrikePoint()
     {
         this.LoadStrikePointByName();
-        this.LoadStrikePointsByTemplate();
     }
 
     /// <summary>
@@ -73,17 +72,6 @@ public class SkillCtrl : PMonoBehaviour
             {
                 this.strikePoints.Add(strikePoint);
             }
-        }
-    }
-
-    /// <summary>
-    /// Get StrikePoints from pool
-    /// </summary>
-    protected virtual void LoadStrikePointsByTemplate()
-    {
-        if (strikePoints == null || strikePoints.Count == 0)
-        {
-            StrikePointManager.instance.GetStrikePointTemplate(strikePointName, transform);
         }
     }
 
@@ -114,8 +102,9 @@ public class SkillCtrl : PMonoBehaviour
         attackStatus = ATTACK_STATUS.DISABLE;
     }
 
-    protected virtual float Delay()
+    public virtual float GetDelay()
     {
+        this.CaculateFinalDelay();
         return this.skillData.finalDelay;
     }
 
@@ -182,7 +171,7 @@ public class SkillCtrl : PMonoBehaviour
     protected virtual void CaculateFinalDelay()
     {
         //this.skillData.finalDelay = this.skillData.baseDelay;
-        this.skillData.finalDelay = this.skillData.baseDelay - ((this.skillData.maxDelay - this.skillData.minDelay) / (this.planeCtrl.maxLevel - 1)) * (this.planeCtrl.level.level - 1);
+        this.skillData.finalDelay = this.skillData.baseDelay - ((this.skillData.maxDelay - this.skillData.minDelay) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
 
         if (this.skillData.finalDelay > this.skillData.maxDelay) this.skillData.finalDelay = this.skillData.maxDelay;
         if (this.skillData.finalDelay < this.skillData.minDelay) this.skillData.finalDelay = this.skillData.minDelay;
@@ -191,7 +180,7 @@ public class SkillCtrl : PMonoBehaviour
     protected virtual void CaculateFinalCoolDown()
     {
         //this.skillData.finalCoolDown = this.skillData.baseCoolDown;
-        this.skillData.finalCoolDown = this.skillData.baseCoolDown - ((this.skillData.maxCoolDown - this.skillData.minCoolDown) / (this.planeCtrl.maxLevel - 1)) * (this.planeCtrl.level.level - 1);
+        this.skillData.finalCoolDown = this.skillData.baseCoolDown - ((this.skillData.maxCoolDown - this.skillData.minCoolDown) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
 
         if (this.skillData.finalCoolDown > this.skillData.maxCoolDown) this.skillData.finalCoolDown = this.skillData.maxCoolDown;
         if (this.skillData.finalCoolDown < this.skillData.minCoolDown) this.skillData.finalCoolDown = this.skillData.minCoolDown;

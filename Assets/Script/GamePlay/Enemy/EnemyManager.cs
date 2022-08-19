@@ -7,6 +7,7 @@ public class EnemyManager : PMonoBehaviour
     [SerializeField] protected string enemyListName = "ListEnemy";
     [SerializeField] protected Transform listEnemy;
     [SerializeField] protected List<Transform> enemyList;
+    [SerializeField] protected List<BossData> bossDatas;
     [SerializeField] protected string enemyHolderName = "EnemyHolder";
     [SerializeField] protected Transform enemyHolder;
 
@@ -33,8 +34,24 @@ public class EnemyManager : PMonoBehaviour
     {
         base.LoadComponents();
         this.LoadEnemyList();
+        this.LoadBossData();
         this.LoadEnemyHolder();
         this.LoadEnemyMovingPath();
+    }
+
+    protected virtual void LoadBossData()
+    {
+        if (this.bossDatas.Count > 0)
+        {
+            this.bossDatas = new List<BossData>();
+        }
+
+        BossData[] Datas = Resources.FindObjectsOfTypeAll(typeof(BossData)) as BossData[];
+
+        foreach (BossData bossData in Datas)
+        {
+            this.bossDatas.Add(bossData);
+        }
     }
 
 
@@ -62,6 +79,14 @@ public class EnemyManager : PMonoBehaviour
             this.enemyList.Add(e);
         }
     }
+    protected virtual Transform GetEnemyByName(string enemyName)
+    {
+        foreach (Transform e in this.enemyList)
+        {
+            if (e.name == enemyName) return e;
+        }
+        return null;
+    }
 
     public Transform SpawnEnemy(string enemyName, Vector3 position)
     {
@@ -76,15 +101,6 @@ public class EnemyManager : PMonoBehaviour
         return null;
     }
 
-    protected virtual Transform GetEnemyByName(string enemyName)
-    {
-        foreach (Transform e in this.enemyList)
-        {
-            if (e.name == enemyName) return e;
-        }
-        return null;
-    }
-
     public virtual Transform GetMovingPath(string name)
     {
         foreach (Transform path in this.enemyMovingPath)
@@ -94,6 +110,16 @@ public class EnemyManager : PMonoBehaviour
                 return path;
             }
         }
+        return null;
+    }
+
+    public virtual BossData GetBossData(string name)
+    {
+        foreach (BossData bossData in this.bossDatas)
+        {
+            if (bossData.name == name) return bossData;
+        }
+
         return null;
     }
 }

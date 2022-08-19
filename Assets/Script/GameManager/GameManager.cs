@@ -7,6 +7,7 @@ public class GameManager : PMonoBehaviour
     public static GameManager instance;
     [SerializeField] protected string playerName = "MyPlayer";
     [SerializeField] protected Transform player;
+    [SerializeField] protected bool toogleWave = false;
 
     protected override void LoadComponents()
     {
@@ -26,7 +27,10 @@ public class GameManager : PMonoBehaviour
             instance = this;
         }
 
-        WaveManager.instance.StartWave();
+        if (toogleWave)
+        {
+            WaveManager.instance.StartWave();
+        }
     }
 
     public virtual Vector3 GetPlayerPosition()

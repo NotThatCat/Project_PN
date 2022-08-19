@@ -7,7 +7,6 @@ public class MoveByPath : EnemyMoving
     [Header("By Path")]
     [SerializeField] protected Transform checkpointPath;
     [SerializeField] protected bool pathFinish = false;
-    [SerializeField] protected float speed = 2f;
     [SerializeField] protected float checkpointDistance = Mathf.Infinity;
     [SerializeField] protected int checkpointIndex = 0;
     [SerializeField] protected List<Transform> checkpoints;
@@ -24,7 +23,7 @@ public class MoveByPath : EnemyMoving
     protected override void Moving()
     {
 
-        float step = this.speed * Time.deltaTime;
+        float step = this.movingSpeed * Time.deltaTime;
         transform.parent.position = Vector3.MoveTowards(
             transform.parent.position,
             this.CurrentCheckPoint().position,

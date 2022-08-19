@@ -50,15 +50,15 @@ public class PlayerMoving : PMonoBehaviour
         /// Check moving direction
         if (this.position.x - transform.position.x >= 0 + this.animationScale)
         {
-            this.playerCtrl.playerModelCtrl.planeAnimator.TurnRight();
+            this.playerCtrl.TurnRight();
         }
         else if (this.position.x - transform.position.x <= 0 - this.animationScale)
         {
-            this.playerCtrl.playerModelCtrl.planeAnimator.TurnLeft();
+            this.playerCtrl.TurnLeft();
         }
         else
         {
-            this.playerCtrl.playerModelCtrl.planeAnimator.Idle();
+            this.playerCtrl.Idle();
         }
     }
 }
