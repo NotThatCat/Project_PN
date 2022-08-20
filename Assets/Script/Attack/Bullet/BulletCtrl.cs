@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BulletCtrl : PMonoBehaviour
 {
-    public Despawn despawn;
-    public BulletDamageSender bulletDamageSender;
+    [SerializeField] public Despawn despawn;
+    [SerializeField] public BulletDamageSender bulletDamageSender;
 
     protected override void Start()
     {

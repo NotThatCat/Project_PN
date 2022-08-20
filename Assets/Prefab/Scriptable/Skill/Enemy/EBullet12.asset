@@ -19,10 +19,11 @@ MonoBehaviour:
   baseCoolDown: 1.5
   finalCoolDown: 1.5
   minCoolDown: 0.75
-  maxCoolDown: 2
+  maxCoolDown: 1.5
   damage: 1
   bulletName: EBullet12
   type: 0
   useSpearNumbers: 0
   spearNumbers: 2
   bulletRotaFixed: 0.05
+  number: 3

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletFly : PMonoBehaviour
 {
-    [SerializeField] protected float speed = 12f;
+    [SerializeField] protected float speed = 5f;
 
     protected override void Update()
     {

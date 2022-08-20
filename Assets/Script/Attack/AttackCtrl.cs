@@ -12,7 +12,7 @@ public abstract class AttackCtrl : PMonoBehaviour
 
     protected override void Awake()
     {
-        if (this.defaultSkill > this.skillCtrls.Count || this.defaultSkill < 0)
+        if (this.defaultSkill >= this.skillCtrls.Count || this.defaultSkill < 0)
         {
             this.LogError("defaultSkill invalid");
             this.defaultSkill = 0;
