@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,11 @@ public class GameManager : PMonoBehaviour
         {
             WaveManager.instance.StartWave();
         }
+    }
+
+    internal void PlayerDeath()
+    {
+        InputsManager.instance.DisableInGameInput();
     }
 
     public virtual Vector3 GetPlayerPosition()

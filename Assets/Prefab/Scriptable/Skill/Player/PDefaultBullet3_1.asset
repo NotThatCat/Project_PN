@@ -17,12 +17,13 @@ MonoBehaviour:
   minDelay: 0
   maxDelay: 0
   baseCoolDown: 0.35
-  finalCoolDown: 0.35
+  finalCoolDown: 0.25
   minCoolDown: 0.1
   maxCoolDown: 0.35
-  damage: 1
+  damage: 2
   bulletName: PDefaultBullet3
   type: 0
   useSpearNumbers: 1
   spearNumbers: 2
   bulletRotaFixed: 0.05
+  number: 3

@@ -3,8 +3,8 @@ using UnityEngine;
 public class DamageReceiver : PMonoBehaviour
 {
     [Header("Damage Receiver")]
-    [SerializeField] protected float hp = 0;
-    [SerializeField] protected float maxHp = 1;
+    [SerializeField] public float hp = 0;
+    [SerializeField] public float maxHp = 1;
     [SerializeField] protected BULLET_SOURCEDAMAGE takeDamageFrom = BULLET_SOURCEDAMAGE.PLAYER;
 
     protected override void OnEnable()
@@ -12,19 +12,9 @@ public class DamageReceiver : PMonoBehaviour
         this.ResetHP();
     }
 
-    public virtual float HP()
-    {
-        return this.hp;
-    }
-
     protected virtual void ResetHP()
     {
-        this.hp = this.MaxHp();
-    }
-
-    public virtual float MaxHp()
-    {
-        return this.maxHp;
+        this.hp = this.maxHp;
     }
 
     /// <summary>
@@ -34,7 +24,8 @@ public class DamageReceiver : PMonoBehaviour
     /// <returns>If damage success</returns>
     public virtual bool Damaged(float damage)
     {
-        this.hp -= damage;
+        this.TakeDamagedEffect();
+        this.DecreaseHP(damage);
         if (this.hp <= 0) this.hp = 0;
 
         this.Dying();
@@ -51,7 +42,8 @@ public class DamageReceiver : PMonoBehaviour
     {
         if (sourceDamage == this.takeDamageFrom)
         {
-            this.hp -= damage;
+            this.DecreaseHP(damage);
+            this.TakeDamagedEffect();
             if (this.hp <= 0) this.hp = 0;
 
             this.Dying();
@@ -60,13 +52,18 @@ public class DamageReceiver : PMonoBehaviour
         return false;
     }
 
+    protected virtual void DecreaseHP(float value)
+    {
+        this.hp -= value;
+    }
+
     /// <summary>
     /// Overide for Phase 2+ Enemy, revive after death
     /// </summary>
     protected virtual void Dying()
     {
         if (this.IsAlive()) return;
-        this.Despawn();
+        this.Death();
     }
 
     protected virtual bool IsAlive()
@@ -74,9 +71,19 @@ public class DamageReceiver : PMonoBehaviour
         return this.hp > 0;
     }
 
+    protected virtual void Death()
+    {
+        this.Despawn();
+    }
+
     protected virtual void Despawn()
     {
         Destroy(transform.parent.gameObject);
+    }
+
+    protected virtual void TakeDamagedEffect()
+    {
+
     }
 
 }

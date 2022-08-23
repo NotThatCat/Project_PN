@@ -9,7 +9,6 @@ public class EnemyCtrl : PMonoBehaviour
     [SerializeField] public EnemyMoving enemyMoving;
     [SerializeField] public Despawn despawn;
     [SerializeField] public Level level;
-    [SerializeField] protected BossData bossData;
 
     protected override void LoadComponents()
     {
@@ -18,7 +17,6 @@ public class EnemyCtrl : PMonoBehaviour
         this.LoadEnemyMoving();
         this.LoadDespawn();
         this.LoadLevel();
-        this.LoadBossData();
     }
 
     protected override void Awake()
@@ -33,16 +31,6 @@ public class EnemyCtrl : PMonoBehaviour
         {
             Debug.Log("Cannot Find EnemyManager");
         }
-    }
-
-    protected virtual void LoadBossData()
-    {
-        this.bossData = this.enemyManager.GetBossData(transform.name);
-    }
-
-    internal BossData GetBossData()
-    {
-        return this.bossData;
     }
 
     protected virtual void LoadLevel()

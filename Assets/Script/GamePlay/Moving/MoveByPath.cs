@@ -22,7 +22,6 @@ public class MoveByPath : EnemyMoving
 
     protected override void Moving()
     {
-
         float step = this.movingSpeed * Time.deltaTime;
         transform.parent.position = Vector3.MoveTowards(
             transform.parent.position,

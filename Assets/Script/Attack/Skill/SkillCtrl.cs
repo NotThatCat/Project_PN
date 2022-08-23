@@ -7,7 +7,6 @@ public class SkillCtrl : PMonoBehaviour
     [SerializeField] protected SkillData skillData;
 
     [SerializeField] protected string strikePointName = "StrikePoints";
-    [SerializeField] protected string strikePointTemplate = "defbullet";
     [SerializeField] protected List<Transform> strikePoints;
 
     [SerializeField] protected AttackCtrl attackCtrl;

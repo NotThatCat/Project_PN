@@ -9,18 +9,23 @@ public class BossMoving : MoveByPath
     {
         if (this.startMoving)
         {
-            this.MoveToNextCheckPoint();
             this.Moving();
         }
     }
 
     protected override void Moving()
     {
+        this.MoveToPlayerPositionX();
+    }
+
+    protected virtual void MoveToPlayerPositionX()
+    {
+        Vector3 playerPosition = GameManager.instance.GetPlayerPosition();
 
         float step = this.movingSpeed * Time.deltaTime;
         transform.parent.position = Vector3.MoveTowards(
             transform.parent.position,
-            this.CurrentCheckPoint().position,
+            new Vector3(playerPosition.x, transform.position.y, transform.position.z),
             step);
     }
 

@@ -1,82 +1,22 @@
 using UnityEngine;
 
-public class EnemyDamageReceiver : PMonoBehaviour
+public class EnemyDamageReceiver : DamageReceiver
 {
-    [Header("Damage Receiver")]
-    [SerializeField] protected float hp = 0;
-    [SerializeField] protected float maxHp = 1;
-    [SerializeField] protected string takeDamageFrom = "";
+    [SerializeField] protected EnemyCtrl enemyCtrl;
 
-    protected override void OnEnable()
+    protected override void LoadComponents()
     {
-        this.ResetHP();
+        base.LoadComponents();
+        this.LoadEnemyCtrl();
     }
 
-    public virtual float HP()
+    protected virtual void LoadEnemyCtrl()
     {
-        return this.hp;
+        this.enemyCtrl = transform.GetComponentInParent<EnemyCtrl>();
     }
 
-    protected virtual void ResetHP()
+    protected override void Despawn()
     {
-        this.hp = this.MaxHp();
+        this.enemyCtrl.despawn.Despawning();
     }
-
-    public virtual float MaxHp()
-    {
-        return this.maxHp;
-    }
-
-    /// <summary>
-    /// Perform Damage without condition
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <returns>If damage success</returns>
-    public virtual bool Damaged(float damage)
-    {
-        this.hp -= damage;
-        if (this.hp <= 0) this.hp = 0;
-
-        this.Dying();
-        return true;
-    }
-
-    /// <summary>
-    /// Perform Damage form takeDamageFrom
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="sourceDamage"></param>
-    /// <returns>If damage success</returns>
-    public virtual bool Damaged(float damage, string sourceDamage)
-    {
-        if (sourceDamage == this.takeDamageFrom)
-        {
-            this.hp -= damage;
-            if (this.hp <= 0) this.hp = 0;
-
-            this.Dying();
-            return true;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// Overide for Phase 2+ Enemy, revive after death
-    /// </summary>
-    protected virtual void Dying()
-    {
-        if (this.IsAlive()) return;
-        this.Despawn();
-    }
-
-    protected virtual bool IsAlive()
-    {
-        return this.hp > 0;
-    }
-
-    protected virtual void Despawn()
-    {
-        Destroy(transform.parent.gameObject);
-    }
-
 }

@@ -16,9 +16,14 @@ MonoBehaviour:
   spawnBetweenDelay: 0.3
   delayAfterSpawn: 0
   enemyList:
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
+  - eP02
+  - eP02
+  - eP02
+  - eP02
+  - eP02
+  - eP02
+  - eP02
+  - eP02
+  - eP02
+  - eP02
   pathName: PathCrep_4

@@ -7,6 +7,8 @@ public class InputsManager : PMonoBehaviour
     public static InputsManager instance;
     [SerializeField] protected Vector2 mousePos;
     [SerializeField] protected Vector3 inputMousePos;
+    [SerializeField] protected bool allowInput = true;
+    [SerializeField] protected bool inGameInput = true;
 
     protected override void Start()
     {
@@ -16,9 +18,22 @@ public class InputsManager : PMonoBehaviour
 
     protected override void Update()
     {
+        if (!inGameInput) return;
+        if (this.inGameInput)
+        {
+            this.InputPlayerMoving();
+            this.InputPlayerSkill();
+        }
+    }
+
+    protected virtual void InputPlayerMoving()
+    {
         this.LoadMousePos();
         this.inputMousePos = Input.mousePosition;
+    }
 
+    protected virtual void InputPlayerSkill()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha1)) PlayerCtrl.instance.ChangeSkill(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) PlayerCtrl.instance.ChangeSkill(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) PlayerCtrl.instance.ChangeSkill(2);
@@ -34,6 +49,11 @@ public class InputsManager : PMonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0)) PlayerCtrl.instance.Attack();
         if (Input.GetKeyDown(KeyCode.A)) PlayerCtrl.instance.level.Down();
         if (Input.GetKeyDown(KeyCode.D)) PlayerCtrl.instance.level.Up();
+    }
+
+    public virtual void DisableInGameInput()
+    {
+        this.inGameInput = false;
     }
 
     protected virtual void LoadMousePos()

@@ -20,9 +20,10 @@ MonoBehaviour:
   finalCoolDown: 0.45
   minCoolDown: 0.2
   maxCoolDown: 0.45
-  damage: 1
+  damage: 2
   bulletName: PDefaultBullet3
   type: 0
   useSpearNumbers: 1
   spearNumbers: 2
   bulletRotaFixed: 0.05
+  number: 3

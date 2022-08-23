@@ -16,10 +16,10 @@ MonoBehaviour:
   finalDelay: 0
   minDelay: 0
   maxDelay: 2
-  baseCoolDown: 0
-  finalCoolDown: 0
-  minCoolDown: 0
-  maxCoolDown: 0
+  baseCoolDown: 1
+  finalCoolDown: 1
+  minCoolDown: 0.05
+  maxCoolDown: 1
   damage: 1
   bulletName: EBullet39
   type: 0
