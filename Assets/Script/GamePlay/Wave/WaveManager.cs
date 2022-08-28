@@ -77,6 +77,7 @@ public class WaveManager : PMonoBehaviour
                 yield return new WaitForSeconds(wctrl.waveData.spawnBetweenDelay);
             }
             yield return new WaitForSeconds(wctrl.waveData.delayAfterSpawn);
+            this.currentWave += 1;
         }
         isRunningWave = false;
 

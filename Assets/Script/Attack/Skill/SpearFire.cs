@@ -44,5 +44,8 @@ public class SpearFire : SkillCtrl
                 this.SpawnBullet(this.strikePoints[i].position, bulletRotation);
             }
         }
+
+
+        if (playSound) this.PlaySound("SoundName");
     }
 }

@@ -16,6 +16,8 @@ public class SkillCtrl : PMonoBehaviour
     [SerializeField] protected bool loopAttack = true;
     [SerializeField] protected bool attackInProgress = false;
 
+    [SerializeField] protected bool playSound = false;
+
     protected float fixedTimer = 0f;
 
     // ******* Attack Process:
@@ -118,27 +120,7 @@ public class SkillCtrl : PMonoBehaviour
     {
         this.attackInProgress = true;
 
-        //Perform attack once before loop (but how to prevent duplicate code?)
-        this.CaculateFinalDelay();
-        if (this.skillData.finalDelay > 0)
-        {
-            this.attackStatus = ATTACK_STATUS.IN_DELAY;
-            yield return new WaitForSeconds(this.skillData.finalDelay);
-        }
-
-        this.attackStatus = ATTACK_STATUS.ATTACKING;
-        this.Attack();
-        this.attackStatus = ATTACK_STATUS.ATTACKED;
-
-        this.CaculateFinalCoolDown();
-        if (this.skillData.finalCoolDown > 0)
-        {
-            this.attackStatus = ATTACK_STATUS.IN_COOLDOWN;
-            yield return new WaitForSeconds(this.skillData.finalCoolDown);
-            this.attackStatus = ATTACK_STATUS.READY_ATTACK;
-        }
-
-        while (loop)
+        do
         {
             ////This stop function by using attackStatus is not complete
             ////For any break to stop attack
@@ -163,6 +145,7 @@ public class SkillCtrl : PMonoBehaviour
                 this.attackStatus = ATTACK_STATUS.READY_ATTACK;
             }
         }
+        while (loop);
 
         this.attackInProgress = false;
     }
@@ -197,6 +180,8 @@ public class SkillCtrl : PMonoBehaviour
         {
             this.SpawnBullet(sp.position, this.transform.rotation);
         }
+
+        if (playSound) this.PlaySound("SoundName");
     }
 
     protected virtual Transform SpawnBullet(Vector3 shootPosition, Quaternion rotation)
@@ -226,5 +211,10 @@ public class SkillCtrl : PMonoBehaviour
     {
         base.LogError(error);
         Debug.LogError(transform.name + " " + error);
+    }
+
+    protected virtual void PlaySound(string name)
+    {
+        SoundManager.instance.PlaySound(name);
     }
 }
