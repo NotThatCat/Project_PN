@@ -11531,7 +11531,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6141151630938779872}
-  - component: {fileID: 5196118318257566418}
+  - component: {fileID: 2121104228}
   m_Layer: 0
   m_Name: Buleltfly
   m_TagString: Untagged
@@ -11554,7 +11554,7 @@ Transform:
   m_Father: {fileID: 3226359721598729119}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5196118318257566418
+--- !u!114 &2121104228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11563,10 +11563,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3384200730831185128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bf66e3e1d6fe8f4d958d737e2ade3b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1197f8845a859a343ae6632bd56573cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 3
+  rotateSpeed: 1500
+  model: {fileID: 4996592455633971585}
+  damageSender: {fileID: 9066553711672031685}
 --- !u!1 &3410729383419345515
 GameObject:
   m_ObjectHideFlags: 0
@@ -19676,7 +19679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf66e3e1d6fe8f4d958d737e2ade3b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 9
 --- !u!1 &5327512283476991023
 GameObject:
   m_ObjectHideFlags: 0
@@ -20575,7 +20578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf66e3e1d6fe8f4d958d737e2ade3b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 8
 --- !u!1 &5703654777426314315
 GameObject:
   m_ObjectHideFlags: 0
@@ -23256,7 +23259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4342644317548823599}
-  - component: {fileID: 7763965390926262106}
+  - component: {fileID: 1904750655}
   m_Layer: 0
   m_Name: Buleltfly
   m_TagString: Untagged
@@ -23279,7 +23282,7 @@ Transform:
   m_Father: {fileID: 6603483593098725023}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7763965390926262106
+--- !u!114 &1904750655
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -23288,10 +23291,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6636596598737201197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bf66e3e1d6fe8f4d958d737e2ade3b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1197f8845a859a343ae6632bd56573cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 3
+  rotateSpeed: 500
+  model: {fileID: 6184807818878944945}
+  damageSender: {fileID: 6865255263083421194}
 --- !u!1 &6676258334770760594
 GameObject:
   m_ObjectHideFlags: 0
@@ -24328,7 +24334,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6142158408790181842}
-  - component: {fileID: 6847180301364233421}
+  - component: {fileID: 1205595630}
   m_Layer: 0
   m_Name: Buleltfly
   m_TagString: Untagged
@@ -24351,7 +24357,7 @@ Transform:
   m_Father: {fileID: 7639288275580507572}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6847180301364233421
+--- !u!114 &1205595630
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24360,10 +24366,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6996694519212956465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bf66e3e1d6fe8f4d958d737e2ade3b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1197f8845a859a343ae6632bd56573cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 4
+  rotateSpeed: 1500
+  model: {fileID: 3425271613117495946}
+  damageSender: {fileID: 6087370744391008757}
 --- !u!1 &7020689404591214039
 GameObject:
   m_ObjectHideFlags: 0
@@ -26651,8 +26660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1197f8845a859a343ae6632bd56573cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
-  rotateSpeed: 4
+  speed: 4
+  rotateSpeed: 1700
   model: {fileID: 5299202545597355005}
   damageSender: {fileID: 7412128317774463177}
 --- !u!1 &7623192600055763735
