@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SkillCtrl : PMonoBehaviour
 {
-    [SerializeField] protected SkillData skillData;
+    [SerializeField] protected SkillSO skillSO;
+    [SerializeField] protected SkillManager skillManager;
 
     [SerializeField] protected string strikePointName = "StrikePoints";
     [SerializeField] protected List<Transform> strikePoints;
@@ -13,27 +14,18 @@ public class SkillCtrl : PMonoBehaviour
 
     [Header("Attack Status")] // Require reset if Stop Attack
     [SerializeField] protected ATTACK_STATUS attackStatus = ATTACK_STATUS.READY_ATTACK;
-    [SerializeField] protected bool loopAttack = true;
     [SerializeField] protected bool attackInProgress = false;
 
     [SerializeField] protected bool playSound = false;
 
     protected float fixedTimer = 0f;
 
-    // ******* Attack Process:
-    // isAttack
-    // isreadyToAttack?
-    // Delay caculate -> FinalDelay
-    // Perform Attack
-    // Cooldown -> FinalCooldown
-    // ReadyToAttack
-    // *******
-
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
         this.LoadPlanCtrl();
+        this.LoadSkillManager();
         this.LoadSkillData();
         this.LoadStrikePoint();
     }
@@ -43,9 +35,15 @@ public class SkillCtrl : PMonoBehaviour
         this.attackCtrl = transform.GetComponentInParent<AttackCtrl>();
     }
 
+    protected virtual void LoadSkillManager()
+    {
+        this.skillManager = GameObject.Find("SkillManager").GetComponent<SkillManager>();
+    }
+
     protected virtual void LoadSkillData()
     {
-
+        if (this.skillManager == null) return;
+        this.skillSO = this.skillManager.GetSkillData(transform.name);
     }
 
     /// <summary>
@@ -76,11 +74,13 @@ public class SkillCtrl : PMonoBehaviour
         }
     }
 
+
+
     public virtual bool StartAttack()
     {
         if (!attackInProgress && this.attackStatus != ATTACK_STATUS.DISABLE)
         {
-            StartCoroutine(this.AttackProcess(this.loopAttack));
+            StartCoroutine(this.AttackProcess(this.skillSO.loopAttack));
             return true;
         }
         else return false;
@@ -106,16 +106,9 @@ public class SkillCtrl : PMonoBehaviour
     public virtual float GetDelay()
     {
         this.CaculateFinalDelay();
-        return this.skillData.finalDelay;
+        return this.skillSO.finalDelay;
     }
 
-    // Attack Process:
-    // isAttack
-    // isreadyToAttack?
-    // Delay caculate -> FinalDelay
-    // FixedAttack
-    // Cooldown -> FinalCooldown
-    // ReadyToAttack
     protected virtual IEnumerator AttackProcess(bool loop)
     {
         this.attackInProgress = true;
@@ -126,23 +119,44 @@ public class SkillCtrl : PMonoBehaviour
             ////For any break to stop attack
             //if (this.attackStatus == ATTACK_STATUS.STOPING) break;
 
-            this.CaculateFinalDelay();
-            if (this.skillData.finalDelay > 0)
+            //////////////// Delay
+            if (this.skillSO.useDelay)
             {
-                this.attackStatus = ATTACK_STATUS.IN_DELAY;
-                yield return new WaitForSeconds(this.skillData.finalDelay);
+                this.BeforeDelay();
+                yield return new WaitForSeconds(this.skillSO.finalDelay);
+                this.AfterDelay();
             }
 
-            this.attackStatus = ATTACK_STATUS.ATTACKING;
-            this.Attack();
-            this.attackStatus = ATTACK_STATUS.ATTACKED;
+            //////////////// Attack
+            this.BeforeAttack();
 
-            this.CaculateFinalCoolDown();
-            if (this.skillData.finalCoolDown > 0)
+            if (this.skillSO.isBurstAttack)
             {
-                this.attackStatus = ATTACK_STATUS.IN_COOLDOWN;
-                yield return new WaitForSeconds(this.skillData.finalCoolDown);
-                this.attackStatus = ATTACK_STATUS.READY_ATTACK;
+                for (int i = 0; i < this.skillSO.burstNumber; i++)
+                {
+                    this.OnAttackEffect();
+                    this.MainAttack();
+                    if (this.skillSO.useBaseDelay)
+                    {
+                        yield return new WaitForSeconds(this.skillSO.finalDelay);
+                    }
+                    yield return new WaitForSeconds(this.skillSO.burstDelay);
+                }
+            }
+            else
+            {
+                this.OnAttackEffect();
+                this.MainAttack();
+            }
+
+            this.AfterAttack();
+
+            //////////////// Cool Down
+            if (this.skillSO.useCoolDown)
+            {
+                this.BeforeCoolDown();
+                yield return new WaitForSeconds(this.skillSO.finalCoolDown);
+                this.AfterCoolDown();
             }
         }
         while (loop);
@@ -150,43 +164,145 @@ public class SkillCtrl : PMonoBehaviour
         this.attackInProgress = false;
     }
 
+    protected virtual void MainAttack()
+    {
+        Transform attackTransform = this.transform;
+        if (this.strikePoints.Count <= 0)
+        {
+            this.GenerateBulletAtTransform(attackTransform);
+        }
+        else
+        {
+            foreach (Transform sp in this.strikePoints)
+            {
+                attackTransform = sp;
+                this.GenerateBulletAtTransform(attackTransform);
+            }
+        }
+    }
+
+    protected virtual void GenerateBulletAtTransform(Transform bulletTransform)
+    {
+        if (this.skillSO.isSpearAttack)
+        {
+            float centerIndex = (this.skillSO.spearNumbers - 1) / 2;
+            for (int i = 0; i < this.skillSO.spearNumbers; i++)
+            {
+                Quaternion bulletRotation = CaculateBulletRotationAtIndex(bulletTransform, i, centerIndex);
+                this.SpawnBullet(bulletTransform.position, bulletRotation);
+            }
+        }
+        else
+        {
+            this.SpawnBullet(bulletTransform.position, bulletTransform.rotation);
+        }
+    }
+
+    protected virtual Quaternion CaculateBulletRotationAtIndex(Transform bulletTransform, int index, float centerIndex)
+    {
+        return new Quaternion(bulletTransform.rotation.x,
+                        bulletTransform.rotation.y,
+                        bulletTransform.rotation.z - this.skillSO.bulletRotaFixed * (index - centerIndex),
+                        bulletTransform.rotation.w).normalized;
+    }
+
+    //Attact Process
+    protected virtual void BeforeDelay()
+    {
+        this.attackStatus = ATTACK_STATUS.IN_DELAY;
+        this.BeforeDelayEffect();
+        this.CaculateFinalDelay();
+    }
+    protected virtual void AfterDelay()
+    {
+        this.AfterDelayEffect();
+    }
+    protected virtual void BeforeAttack()
+    {
+        this.attackStatus = ATTACK_STATUS.ATTACKING;
+        this.BeforeAttackEffect();
+    }
+    protected virtual void AfterAttack()
+    {
+        this.attackStatus = ATTACK_STATUS.ATTACKED;
+        this.AfterAttackEffect();
+    }
+    protected virtual void BeforeCoolDown()
+    {
+        this.attackStatus = ATTACK_STATUS.IN_COOLDOWN;
+        this.BeforeCoolDownEffect();
+        this.CaculateFinalCoolDown();
+    }
+    protected virtual void AfterCoolDown()
+    {
+        this.attackStatus = ATTACK_STATUS.READY_ATTACK;
+        this.AfterCoolDownEffect();
+    }
+
+    //Effect
+    protected virtual void BeforeDelayEffect()
+    {
+
+    }
+    protected virtual void AfterDelayEffect()
+    {
+
+    }
+    protected virtual void BeforeAttackEffect()
+    {
+
+    }
+    protected virtual void OnAttackEffect()
+    {
+        if (playSound) this.PlaySound(this.skillSO.soundName);
+    }
+    protected virtual void AfterAttackEffect()
+    {
+
+    }
+    protected virtual void BeforeCoolDownEffect()
+    {
+
+    }
+    protected virtual void AfterCoolDownEffect()
+    {
+
+    }
+
+
     protected virtual void CaculateFinalDelay()
     {
-        //this.skillData.finalDelay = this.skillData.baseDelay;
-        this.skillData.finalDelay = this.skillData.baseDelay - ((this.skillData.maxDelay - this.skillData.minDelay) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+        if (this.skillSO.delayScaleWithLevel)
+        {
+            this.skillSO.finalDelay = this.skillSO.baseDelay - ((this.skillSO.maxDelay - this.skillSO.minDelay) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+        }
+        else
+        {
+            this.skillSO.finalDelay = this.skillSO.baseDelay;
+        }
 
-        if (this.skillData.finalDelay > this.skillData.maxDelay) this.skillData.finalDelay = this.skillData.maxDelay;
-        if (this.skillData.finalDelay < this.skillData.minDelay) this.skillData.finalDelay = this.skillData.minDelay;
+        if (this.skillSO.finalDelay > this.skillSO.maxDelay) this.skillSO.finalDelay = this.skillSO.maxDelay;
+        if (this.skillSO.finalDelay < this.skillSO.minDelay) this.skillSO.finalDelay = this.skillSO.minDelay;
     }
 
     protected virtual void CaculateFinalCoolDown()
     {
-        //this.skillData.finalCoolDown = this.skillData.baseCoolDown;
-        this.skillData.finalCoolDown = this.skillData.baseCoolDown - ((this.skillData.maxCoolDown - this.skillData.minCoolDown) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
-
-        if (this.skillData.finalCoolDown > this.skillData.maxCoolDown) this.skillData.finalCoolDown = this.skillData.maxCoolDown;
-        if (this.skillData.finalCoolDown < this.skillData.minCoolDown) this.skillData.finalCoolDown = this.skillData.minCoolDown;
-    }
-
-    protected virtual void Attack()
-    {
-        if (this.strikePoints.Count <= 0)
+        if (this.skillSO.coolDownScaleWithLevel)
         {
-            this.LogError("In FixedAttack: strikePoints not found");
-            return;
+            this.skillSO.finalCoolDown = this.skillSO.baseCoolDown - ((this.skillSO.maxCoolDown - this.skillSO.minCoolDown) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+        }
+        else
+        {
+            this.skillSO.finalCoolDown = this.skillSO.baseCoolDown;
         }
 
-        foreach (Transform sp in this.strikePoints)
-        {
-            this.SpawnBullet(sp.position, this.transform.rotation);
-        }
-
-        if (playSound) this.PlaySound("SoundName");
+        if (this.skillSO.finalCoolDown > this.skillSO.maxCoolDown) this.skillSO.finalCoolDown = this.skillSO.maxCoolDown;
+        if (this.skillSO.finalCoolDown < this.skillSO.minCoolDown) this.skillSO.finalCoolDown = this.skillSO.minCoolDown;
     }
 
     protected virtual Transform SpawnBullet(Vector3 shootPosition, Quaternion rotation)
     {
-        Transform newBullet = BulletManager.instance.Spawn(this.skillData.bulletName, shootPosition, rotation);
+        Transform newBullet = BulletManager.instance.Spawn(this.skillSO.bulletName, shootPosition, rotation);
         BulletCtrl bulletCtrl = newBullet.GetComponent<BulletCtrl>();
         if (bulletCtrl == null) this.LogError("Missing BulletCtrl in newBullet");
         newBullet.gameObject.SetActive(true);
@@ -204,7 +320,7 @@ public class SkillCtrl : PMonoBehaviour
     /// <returns></returns>
     protected virtual float GetDamage()
     {
-        return this.skillData.damage;
+        return this.skillSO.damage;
     }
 
     protected override void LogError(string error)

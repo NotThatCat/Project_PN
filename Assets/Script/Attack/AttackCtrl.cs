@@ -32,8 +32,12 @@ public abstract class AttackCtrl : PMonoBehaviour
         this.skillCtrls = new List<SkillCtrl>();
         foreach (Transform skill in transform)
         {
-            skills.Add(skill);
-            skillCtrls.Add(skill.GetComponent<SkillCtrl>());
+            SkillCtrl skillProcessCtrl = skill.GetComponent<SkillCtrl>();
+            if(skillProcessCtrl != null)
+            {
+                skills.Add(skill);
+                skillCtrls.Add(skill.GetComponent<SkillCtrl>());
+            }
         }
 
         if (this.skills.Count <= 0) this.LogError("Skill not found");

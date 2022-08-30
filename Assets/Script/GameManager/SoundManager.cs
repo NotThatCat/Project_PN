@@ -24,6 +24,6 @@ public class SoundManager : PMonoBehaviour
 
     public virtual void PlaySound(string name)
     {
-        bulletSound.Play(0);
+        bulletSound.PlayOneShot(bulletSound.clip);
     }
 }

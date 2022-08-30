@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be78565e99523ac448cc8f9e6c5dcf64, type: 3}
+  m_Name: 6
+  m_EditorClassIdentifier: 
+  useDelay: 0
+  delayScaleWithLevel: 1
+  baseDelay: 0
+  finalDelay: 0
+  minDelay: 0
+  maxDelay: 0
+  useCoolDown: 1
+  coolDownScaleWithLevel: 1
+  baseCoolDown: 0.35
+  finalCoolDown: 0.1
+  minCoolDown: 0.1
+  maxCoolDown: 0.35
+  soundName: DefaultSound
+  effectName: DefaulEffect
+  damage: 1
+  bulletName: PBullet6
+  isSpearAttack: 1
+  spearNumbers: 5
+  bulletRotaFixed: 0.2
+  isBurstAttack: 0
+  useBaseDelay: 0
+  burstDelayScaleWithLevel: 0
+  burstNumber: 3
+  burstDelay: 0.03
