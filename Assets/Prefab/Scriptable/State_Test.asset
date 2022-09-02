@@ -9,22 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97f9d983b5484414b91c7802203bf633, type: 3}
-  m_Name: WA2
+  m_Script: {fileID: 11500000, guid: 9b610546d7f165e4abdd728e6f60e372, type: 3}
+  m_Name: State_Test
   m_EditorClassIdentifier: 
-  waveId: 2
-  delayBeforeSpawn: 0
-  spawnBetweenDelay: 0.2
-  delayAfterSpawn: 0
-  enemyList:
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  - eP01
-  pathName: PathW_2
+  stateId: 1
+  stateWaves:
+  - waveId: 5
+    spawnAt: 1
+  - waveId: 4
+    spawnAt: 2
+  - waveId: 3
+    spawnAt: 3
+  - waveId: 2
+    spawnAt: 4
+  - waveId: 1
+    spawnAt: 5

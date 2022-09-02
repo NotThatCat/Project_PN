@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f9d983b5484414b91c7802203bf633, type: 3}
   m_Name: WaveE2
   m_EditorClassIdentifier: 
+  waveId: 42
   delayBeforeSpawn: 0
   spawnBetweenDelay: 0.3
   delayAfterSpawn: 0

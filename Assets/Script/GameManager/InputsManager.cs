@@ -46,9 +46,9 @@ public class InputsManager : PMonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0)) PlayerCtrl.instance.ChangeSkill(9);
         if (Input.GetKeyDown(KeyCode.Q)) PlayerCtrl.instance.NextSkill(-1);
         if (Input.GetKeyDown(KeyCode.E)) PlayerCtrl.instance.NextSkill(1);
-        if (Input.GetKey(KeyCode.Mouse0)) PlayerCtrl.instance.Attack();
         if (Input.GetKeyDown(KeyCode.A)) PlayerCtrl.instance.level.Down();
         if (Input.GetKeyDown(KeyCode.D)) PlayerCtrl.instance.level.Up();
+        if (Input.GetKey(KeyCode.Mouse0)) PlayerCtrl.instance.Attack();
     }
 
     public virtual void DisableInGameInput()

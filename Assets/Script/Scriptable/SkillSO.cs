@@ -42,4 +42,10 @@ public class SkillSO : ScriptableObject
     [SerializeField] public int burstNumber = 2;
     [SerializeField] public float burstDelay = 0.1f;
 
+
+    [Header("Random coolDown")]
+    [SerializeField] public bool isRandomCoolDown = false;
+    [SerializeField] public float minRanCoolDown = 1f;
+    [SerializeField] public float maxRanCoolDown = 2f;
+
 }
