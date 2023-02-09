@@ -12,11 +12,11 @@ TagManager:
   - 
   - Water
   - UI
+  - UIBG
   - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Bullet
+  - Enemy
   - 
   - 
   - BackGroundL2

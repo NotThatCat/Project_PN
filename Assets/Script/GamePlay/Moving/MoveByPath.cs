@@ -38,7 +38,7 @@ public class MoveByPath : EnemyMoving
     {
         this.checkpointDistance = Vector3.Distance(transform.parent.position, this.CurrentCheckPoint().position);
         if (this.checkpointDistance < 0) this.checkpointIndex = 0;
-        if (this.checkpointDistance <= 0.2f) this.checkpointIndex++;
+        if (this.checkpointDistance <= 0.1f) this.checkpointIndex++;
         if (this.checkpointIndex >= this.checkpoints.Count)
         {
             this.checkpointIndex = this.checkpoints.Count - 1;

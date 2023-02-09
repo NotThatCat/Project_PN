@@ -37,13 +37,30 @@ public class SkillManager : PMonoBehaviour
         }
     }
 
-    public virtual SkillSO GetSkillData(string name)
+    public virtual SkillSO GetSkillData(string name, bool retry = true)
     {
-        foreach (SkillSO skill in this.skillDatas)
+        SkillSO target = this.FindSkillLoaded(name);
+        if(target ==  null && retry)
         {
-            if (skill.name == name) return skill;
+            this.LoadComponents();
+            target = this.FindSkillLoaded(name);
         }
 
-        return null;
+        return target;
+    }
+
+    protected virtual SkillSO FindSkillLoaded(string name)
+    {
+        SkillSO target = null;
+        foreach (SkillSO skill in this.skillDatas)
+        {
+            if (skill.name == name)
+            {
+                target = skill;
+                break;
+            }
+        }
+
+        return target;
     }
 }

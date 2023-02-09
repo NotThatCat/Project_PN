@@ -31,6 +31,6 @@ public class PlayerDamageReceiver : DamageReceiver
     protected override void Death()
     {
         this.PlayerDeath();
-        base.Death();
+        transform.parent.gameObject.SetActive(false);
     }
 }

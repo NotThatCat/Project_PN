@@ -23,12 +23,21 @@ public class PlayerAttackCtrl : AttackCtrl
 
     public override int GetMaxLevel()
     {
-        return this.playerCtrl.GetMaxLevel();
+        int currentSkill = this.playerCtrl.GetMaxLevel();
+        this.UpdateUICurrentSkill();
+        return currentSkill;
     }
 
     public override int GetCurrentLevel()
     {
-        return this.playerCtrl.GetCurrentLevel();
+        int currentSkill = this.playerCtrl.GetCurrentLevel();
+        this.UpdateUICurrentSkill();
+        return currentSkill;
+    }
+
+    protected virtual void UpdateUICurrentSkill()
+    {
+        UIManager.instance.UpdatePlayerCurrentSkill(this.GetCurrentSkillImage());
     }
 
     //Testing

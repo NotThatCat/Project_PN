@@ -5,19 +5,12 @@ using UnityEngine;
 public class ParallaxCam : PMonoBehaviour
 {
     [SerializeField] protected Vector2 startpos;
-    [SerializeField] protected string playerName = "MyPlayer";
-    [SerializeField] protected Transform player;
+    [SerializeField] protected Vector3 playerPosition;
     [SerializeField] protected float parallaxEffectX = 0.01f;
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        this.LoadPlayer();
-    }
-
-    public virtual void LoadPlayer()
-    {
-        this.player = GameObject.Find(this.playerName).transform;
     }
 
     protected override void Start()
@@ -27,18 +20,15 @@ public class ParallaxCam : PMonoBehaviour
 
     protected override void Update()
     {
-        float temp = (this.player.position.x * (1 - parallaxEffectX));
-        Vector2 dist = new Vector2(this.player.position.x * parallaxEffectX, 0);
+        this.GetPlayerPosition();
+
+        Vector2 dist = new Vector2(this.playerPosition.x * parallaxEffectX, 0);
 
         transform.position = new Vector3(this.startpos.x + dist.x, 0, transform.position.z);
+    }
 
-        //if (temp > startpos.x + length)
-        //{
-        //    startpos.x += length;
-        //}
-        //else if (temp < startpos.x - length)
-        //{
-        //    startpos.x -= length;
-        //}
+    protected virtual void GetPlayerPosition()
+    {
+        this.playerPosition = GameManager.instance.GetPlayerPosition();
     }
 }

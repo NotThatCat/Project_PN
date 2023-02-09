@@ -76,8 +76,8 @@ public class StateManager : PMonoBehaviour
 
     public virtual void StartLoadedState()
     {
-        WaveManagerTest.instance.StartLoadedState();
-        //StartCoroutine(ProcessingWave());
+        WaveManager.instance.StartLoadedState();
+        SoundManager.instance.PlayMusic(this.stateList[currentStateIndex].musicID);
     }
 
     protected virtual int GoToState(int state)
@@ -141,7 +141,7 @@ public class StateManager : PMonoBehaviour
             this.currentStateWave.Add(sw);
         }
         this.SortWave();
-        WaveManagerTest.instance.LoadStateWave(this.currentStateWave);
+        WaveManager.instance.LoadStateWave(this.currentStateWave);
     }
 
     protected virtual void LoadStateWave(int state)
@@ -169,6 +169,5 @@ public class StateManager : PMonoBehaviour
     protected virtual void SortWave()
     {
         this.currentStateWave.OrderBy(spawnTime => spawnTime.spawnAt);
-        //this.currentStateWave.Sort();
     }
 }

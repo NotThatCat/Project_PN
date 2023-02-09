@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class WaveManager : PMonoBehaviour
 {
-    [SerializeField] protected string waveListName = "WaveList";
-    [SerializeField] protected List<Transform> waveList;
+    [SerializeField] protected string waveHolderName = "WaveList";
+    [SerializeField] protected Transform waveHolder;
     [SerializeField] protected List<WaveData> waveDatas;
+    [SerializeField] protected List<Transform> waveList;
+    [SerializeField] protected List<StateWave> currentStateWave;
     [SerializeField] protected List<WaveCtrl> waveCtrls;
     [SerializeField] public int currentWave = 0;
     [SerializeField] protected bool isRunningWave = false;
-    [SerializeField] protected bool loopAllWave = true;
+    [SerializeField] protected bool loopState = true;
+    [SerializeField] protected float processDelay = 0.01f;
+    [SerializeField] protected float waveTime = 0f;
+    [SerializeField] protected float nextWaveTime = 0f;
 
     public static WaveManager instance;
 
@@ -18,7 +23,7 @@ public class WaveManager : PMonoBehaviour
     {
         base.LoadComponents();
         this.LoadWaveData();
-        this.LoadWave();
+        this.LoadWaveHolder();
     }
 
     protected override void Awake()
@@ -44,48 +49,24 @@ public class WaveManager : PMonoBehaviour
         }
     }
 
-    protected virtual void LoadWave()
+    protected virtual void LoadWaveHolder()
     {
-        this.waveList = new List<Transform>();
-        this.waveCtrls = new List<WaveCtrl>();
-        Transform waves = GameObject.Find(this.waveListName).transform;
-        foreach (Transform w in waves)
-        {
-            this.waveList.Add(w);
-            this.waveCtrls.Add(w.GetComponent<WaveCtrl>());
-        }
+        this.waveHolder = transform.Find(this.waveHolderName);
     }
 
-    public void StartWave()
+    public virtual void StartLoadedState()
     {
-        if (!isRunningWave)
-        {
-            isRunningWave = true;
-            StartCoroutine(ProcessingWave());
-        }
+        StartCoroutine(ProcessingWave());
     }
 
-    protected virtual IEnumerator ProcessingWave()
+    public virtual void LoadStateWave(List<StateWave> states)
     {
-        isRunningWave = true;
-        foreach (WaveCtrl wctrl in this.waveCtrls)
-        {
-            yield return new WaitForSeconds(wctrl.waveData.delayBeforeSpawn);
-            wctrl.StartSpawning();
-            while (!wctrl.IsWaveComplete())
-            {
-                yield return new WaitForSeconds(wctrl.waveData.spawnBetweenDelay);
-            }
-            yield return new WaitForSeconds(wctrl.waveData.delayAfterSpawn);
-            this.currentWave += 1;
-        }
-        isRunningWave = false;
+        this.ResetWave();
 
-        yield return new WaitForSeconds(0.5f);
-        if (this.loopAllWave)
+        foreach (StateWave state in states)
         {
-            this.ResetWave();
-            this.StartWave();
+            this.CreateWave(state.waveId);
+            this.currentStateWave.Add(state);
         }
     }
 
@@ -99,11 +80,93 @@ public class WaveManager : PMonoBehaviour
         return null;
     }
 
+    public virtual WaveData GetWaveDataByID(WAVE_ID id)
+    {
+        foreach (WaveData wd in this.waveDatas)
+        {
+            if (wd.waveId == id) return wd;
+        }
+
+        return null;
+    }
+
+    protected virtual void CreateWave(WAVE_ID waveId)
+    {
+        Transform newWave = new GameObject(waveId.ToString(), typeof(WaveCtrl)).transform;
+        newWave.transform.parent = this.waveHolder;
+
+        WaveCtrl wctrl = newWave.GetComponent<WaveCtrl>();
+        wctrl.CreateWave(waveId);
+
+        this.waveCtrls.Add(wctrl);
+        this.waveList.Add(newWave);
+    }
+
+    protected virtual IEnumerator ProcessingWave()
+    {
+
+        this.waveTime = 0;
+        this.nextWaveTime = this.waveTime;
+
+        for (int i = 0; i < this.waveCtrls.Count; i++)
+        {
+            while(this.currentStateWave[i].spawnAt > this.waveTime)
+            {
+                this.waveTime += processDelay;
+                yield return new WaitForSeconds(processDelay);
+            }
+
+            this.waveCtrls[i].StartSpawning();
+        }
+
+        if (this.loopState)
+        {
+            this.ReRunState();
+        }
+
+        this.waveTime = 0;
+    }
+
+    protected virtual WaveCtrl GetWaveCtrl(WAVE_ID waveId)
+    {
+        foreach (StateWave sw in this.currentStateWave)
+        {
+            if (sw.waveId == waveId)
+            {
+                return this.waveCtrls[this.currentStateWave.IndexOf(sw)];
+            }
+        }
+        return null;
+    }
+
     protected virtual void ResetWave()
+    {
+        foreach (Transform wave in this.waveList)
+        {
+            Destroy(wave.gameObject);
+        }
+
+        this.waveList = new List<Transform>();
+        this.waveCtrls = new List<WaveCtrl>();
+        this.currentStateWave = new List<StateWave>();
+    }
+
+    protected virtual void ReRunState()
+    {
+        this.ResetWaveStatus();
+        this.StartLoadedState();
+    }
+
+    protected virtual void ResetWaveStatus()
     {
         foreach (WaveCtrl wctrl in this.waveCtrls)
         {
             wctrl.ResetWave();
         }
+    }
+
+    protected override void Start()
+    {
+
     }
 }

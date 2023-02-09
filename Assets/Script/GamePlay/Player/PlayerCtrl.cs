@@ -64,6 +64,7 @@ public class PlayerCtrl : PMonoBehaviour
     public virtual void NextSkill(int idx)
     {
         this.playerAttackCtrl.NextSkill(idx);
+        this.Attack();
     }
 
     public virtual void Attack()

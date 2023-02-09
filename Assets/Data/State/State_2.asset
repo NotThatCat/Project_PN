@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b610546d7f165e4abdd728e6f60e372, type: 3}
+  m_Name: State_2
+  m_EditorClassIdentifier: 
+  stateId: 2
+  musicID: 1
+  stateWaves:
+  - waveId: 31
+    spawnAt: 0
+  - waveId: 32
+    spawnAt: 0.5
+  - waveId: 33
+    spawnAt: 1
+  - waveId: 34
+    spawnAt: 1.5
+  - waveId: 1
+    spawnAt: 7
+  - waveId: 31
+    spawnAt: 15
+  - waveId: 32
+    spawnAt: 15.5
+  - waveId: 33
+    spawnAt: 16
+  - waveId: 34
+    spawnAt: 16.5
+  - waveId: 28
+    spawnAt: 18
+  - waveId: 29
+    spawnAt: 18
+  - waveId: 24
+    spawnAt: 19.5
+  - waveId: 25
+    spawnAt: 19.5
+  - waveId: 24
+    spawnAt: 21
+  - waveId: 25
+    spawnAt: 21
+  - waveId: 0
+    spawnAt: 0

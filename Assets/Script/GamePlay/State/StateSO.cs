@@ -6,5 +6,6 @@ using UnityEngine;
 public class StateSO : ScriptableObject
 {
     [SerializeField] public STATE_ID stateId;
+    [SerializeField] public SoundID musicID;
     [SerializeField] public List<StateWave> stateWaves;
 }

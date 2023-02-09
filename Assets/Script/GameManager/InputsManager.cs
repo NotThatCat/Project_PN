@@ -60,7 +60,7 @@ public class InputsManager : PMonoBehaviour
     {
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         this.mousePos.x = worldPosition.x;
-        this.mousePos.y = worldPosition.y;
+        this.mousePos.y = worldPosition.y + 0.4f;
     }
 
     public Vector2 GetMousePos()

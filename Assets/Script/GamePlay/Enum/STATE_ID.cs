@@ -1,5 +1,6 @@
 public enum STATE_ID
 {
+    S_00,
     S_01,
     S_02,
     S_03,

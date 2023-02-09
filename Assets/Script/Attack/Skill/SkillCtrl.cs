@@ -18,7 +18,8 @@ public class SkillCtrl : PMonoBehaviour
 
     [SerializeField] protected bool playSound = false;
 
-    protected float fixedTimer = 0f;
+    [SerializeField] protected float finalDelay = 0f;
+    [SerializeField] protected float finalCoolDown = 0f;
 
 
     protected override void LoadComponents()
@@ -74,7 +75,10 @@ public class SkillCtrl : PMonoBehaviour
         }
     }
 
-
+    public virtual Sprite GetSkillImage()
+    {
+        return skillSO.image;
+    }
 
     public virtual bool StartAttack()
     {
@@ -106,7 +110,7 @@ public class SkillCtrl : PMonoBehaviour
     public virtual float GetDelay()
     {
         this.CaculateFinalDelay();
-        return this.skillSO.finalDelay;
+        return this.finalDelay;
     }
 
     protected virtual IEnumerator AttackProcess(bool loop)
@@ -123,7 +127,7 @@ public class SkillCtrl : PMonoBehaviour
             if (this.skillSO.useDelay)
             {
                 this.BeforeDelay();
-                yield return new WaitForSeconds(this.skillSO.finalDelay);
+                yield return new WaitForSeconds(this.finalDelay);
                 this.AfterDelay();
             }
 
@@ -138,7 +142,7 @@ public class SkillCtrl : PMonoBehaviour
                     this.MainAttack();
                     if (this.skillSO.useBaseDelay)
                     {
-                        yield return new WaitForSeconds(this.skillSO.finalDelay);
+                        yield return new WaitForSeconds(this.finalDelay);
                     }
                     yield return new WaitForSeconds(this.skillSO.burstDelay);
                 }
@@ -155,7 +159,7 @@ public class SkillCtrl : PMonoBehaviour
             if (this.skillSO.useCoolDown)
             {
                 this.BeforeCoolDown();
-                yield return new WaitForSeconds(this.skillSO.finalCoolDown);
+                yield return new WaitForSeconds(this.finalCoolDown);
                 this.AfterCoolDown();
             }
         }
@@ -254,7 +258,7 @@ public class SkillCtrl : PMonoBehaviour
     }
     protected virtual void OnAttackEffect()
     {
-        if (playSound) this.PlaySound(this.skillSO.soundName);
+        if (playSound) this.PlaySound();
     }
     protected virtual void AfterAttackEffect()
     {
@@ -274,30 +278,36 @@ public class SkillCtrl : PMonoBehaviour
     {
         if (this.skillSO.delayScaleWithLevel)
         {
-            this.skillSO.finalDelay = this.skillSO.baseDelay - ((this.skillSO.maxDelay - this.skillSO.minDelay) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+            this.finalDelay = this.skillSO.baseDelay - ((this.skillSO.maxDelay - this.skillSO.minDelay) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
         }
         else
         {
-            this.skillSO.finalDelay = this.skillSO.baseDelay;
+            this.finalDelay = this.skillSO.baseDelay;
         }
 
-        if (this.skillSO.finalDelay > this.skillSO.maxDelay) this.skillSO.finalDelay = this.skillSO.maxDelay;
-        if (this.skillSO.finalDelay < this.skillSO.minDelay) this.skillSO.finalDelay = this.skillSO.minDelay;
+        if (this.finalDelay > this.skillSO.maxDelay) this.finalDelay = this.skillSO.maxDelay;
+        if (this.finalDelay < this.skillSO.minDelay) this.finalDelay = this.skillSO.minDelay;
     }
 
     protected virtual void CaculateFinalCoolDown()
     {
+        if (this.skillSO.isRandomCoolDown)
+        {
+            this.finalCoolDown = Random.Range(this.skillSO.minRanCoolDown, this.skillSO.maxRanCoolDown);
+            return;
+        }
+
         if (this.skillSO.coolDownScaleWithLevel)
         {
-            this.skillSO.finalCoolDown = this.skillSO.baseCoolDown - ((this.skillSO.maxCoolDown - this.skillSO.minCoolDown) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+            this.finalCoolDown = this.skillSO.baseCoolDown - ((this.skillSO.maxCoolDown - this.skillSO.minCoolDown) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
         }
         else
         {
-            this.skillSO.finalCoolDown = this.skillSO.baseCoolDown;
+            this.finalCoolDown = this.skillSO.baseCoolDown;
         }
 
-        if (this.skillSO.finalCoolDown > this.skillSO.maxCoolDown) this.skillSO.finalCoolDown = this.skillSO.maxCoolDown;
-        if (this.skillSO.finalCoolDown < this.skillSO.minCoolDown) this.skillSO.finalCoolDown = this.skillSO.minCoolDown;
+        if (this.finalCoolDown > this.skillSO.maxCoolDown) this.finalCoolDown = this.skillSO.maxCoolDown;
+        if (this.finalCoolDown < this.skillSO.minCoolDown) this.finalCoolDown = this.skillSO.minCoolDown;
     }
 
     protected virtual Transform SpawnBullet(Vector3 shootPosition, Quaternion rotation)
@@ -329,8 +339,8 @@ public class SkillCtrl : PMonoBehaviour
         Debug.LogError(transform.name + " " + error);
     }
 
-    protected virtual void PlaySound(string name)
+    protected virtual void PlaySound()
     {
-        SoundManager.instance.PlaySound(name);
+        SoundManager.instance.PlaySFX(this.skillSO.soundID);
     }
 }

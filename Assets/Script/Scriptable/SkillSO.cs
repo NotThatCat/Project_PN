@@ -5,11 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SkillSO", menuName = "Scriptable/SkillSO", order = 2)]
 public class SkillSO : ScriptableObject
 {
+    [SerializeField] public Sprite image;
     [Header("Attack Delay")]
     [SerializeField] public bool useDelay = false;
     [SerializeField] public bool delayScaleWithLevel = true;
     [SerializeField] public float baseDelay = 0f;
-    [SerializeField] public float finalDelay = 0f;
     [SerializeField] public float minDelay = 0f;
     [SerializeField] public float maxDelay = 0f;
 
@@ -17,11 +17,11 @@ public class SkillSO : ScriptableObject
     [SerializeField] public bool useCoolDown = true;
     [SerializeField] public bool coolDownScaleWithLevel = true;
     [SerializeField] public float baseCoolDown = 0.2f;
-    [SerializeField] public float finalCoolDown = 0.2f;
     [SerializeField] public float minCoolDown = 0.05f;
     [SerializeField] public float maxCoolDown = 0.2f;
 
     [Header("Effect")]
+    [SerializeField] public SoundID soundID;
     [SerializeField] public string soundName = "DefaultSound";
     [SerializeField] public string effectName = "DefaulEffect";
 
@@ -45,7 +45,7 @@ public class SkillSO : ScriptableObject
 
     [Header("Random coolDown")]
     [SerializeField] public bool isRandomCoolDown = false;
-    [SerializeField] public float minRanCoolDown = 1f;
-    [SerializeField] public float maxRanCoolDown = 2f;
+    [SerializeField] public float minRanCoolDown = 2f;
+    [SerializeField] public float maxRanCoolDown = 5f;
 
 }

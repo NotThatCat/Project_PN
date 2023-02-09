@@ -8,7 +8,9 @@ public class GameManager : PMonoBehaviour
     public static GameManager instance;
     [SerializeField] protected string playerName = "MyPlayer";
     [SerializeField] protected Transform player;
-    [SerializeField] protected bool toogleWave = false;
+    [SerializeField] protected Vector3 lastPlayerPostion;
+    [SerializeField] protected bool toogleState = false;
+    [SerializeField] public STATE_ID currentStateID;
 
     protected override void LoadComponents()
     {
@@ -28,9 +30,9 @@ public class GameManager : PMonoBehaviour
             instance = this;
         }
 
-        if (toogleWave)
+        if (toogleState)
         {
-            WaveManager.instance.StartWave();
+            StateManager.instance.StartState(this.currentStateID);
         }
     }
 
@@ -41,6 +43,35 @@ public class GameManager : PMonoBehaviour
 
     public virtual Vector3 GetPlayerPosition()
     {
-        return player.position;
+        if (this.player != null)
+        {
+            this.lastPlayerPostion = this.player.position;
+        }
+
+        return this.lastPlayerPostion;
+    }
+
+    public virtual void PauseGame()
+    {
+        Time.timeScale = 0;
+        SoundManager.instance.PauseMusic();
+        UIManager.instance.ShowUIPauseGame();
+    }
+
+    public virtual void ResumeGame()
+    {
+        Time.timeScale = 1;
+        SoundManager.instance.ResumeMusic();
+        UIManager.instance.ShowUIIngame();
+    }
+
+    public virtual void PlayerLevelUp()
+    {
+        PlayerCtrl.instance.level.Up();
+    }
+
+    public virtual void PlayerLevelDown()
+    {
+        PlayerCtrl.instance.level.Down();
     }
 }

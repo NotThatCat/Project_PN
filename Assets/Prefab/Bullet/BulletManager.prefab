@@ -23295,7 +23295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  rotateSpeed: 500
+  rotateSpeed: 1500
   model: {fileID: 6184807818878944945}
   damageSender: {fileID: 6865255263083421194}
 --- !u!1 &6676258334770760594
@@ -23342,7 +23342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf66e3e1d6fe8f4d958d737e2ade3b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 5
 --- !u!1 &6696208503986519689
 GameObject:
   m_ObjectHideFlags: 0

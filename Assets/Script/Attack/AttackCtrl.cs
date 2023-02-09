@@ -107,6 +107,16 @@ public abstract class AttackCtrl : PMonoBehaviour
         this.ChangeSkill(this.currentSkill + value);
     }
 
+    public virtual Sprite GetCurrentSkillImage()
+    {
+        return this.GetCurrentSkillCtrl().GetSkillImage();
+    }
+
+    public virtual SkillCtrl GetCurrentSkillCtrl()
+    {
+        return this.skillCtrls[this.currentSkill];
+    }
+
     public abstract int GetMaxLevel();
     public abstract int GetCurrentLevel();
 }

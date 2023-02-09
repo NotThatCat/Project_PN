@@ -6,6 +6,7 @@ public class BulletCtrl : PMonoBehaviour
 {
     [SerializeField] public Despawn despawn;
     [SerializeField] public BulletDamageSender bulletDamageSender;
+    [SerializeField] public BulletFly bulletFly;
 
     protected override void Start()
     {
@@ -21,5 +22,6 @@ public class BulletCtrl : PMonoBehaviour
     {
         this.despawn = transform.GetComponentInChildren<Despawn>();
         this.bulletDamageSender = GetComponentInChildren<BulletDamageSender>();
+        this.bulletFly = GetComponentInChildren<BulletFly>();
     }
 }

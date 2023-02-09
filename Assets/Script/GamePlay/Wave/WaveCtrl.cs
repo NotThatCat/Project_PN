@@ -19,22 +19,20 @@ public class WaveCtrl : PMonoBehaviour
 
     protected override void LoadComponents()
     {
-        base.LoadComponents();
         this.LoadWaveManager();
-        this.LoadWaveInfo();
-        this.LoadPath();
     }
 
     protected virtual void LoadWaveManager()
     {
-        this.waveManager = transform.parent.parent.GetComponent<WaveManager>();
+        this.waveManager = WaveManager.instance;
+        //this.waveManager = transform.parent.parent.GetComponent<WaveManagerTest>();
     }
 
-    protected virtual void LoadWaveInfo()
+    protected virtual void LoadWaveInfo(WAVE_ID id)
     {
         if (this.waveData || this.waveData == null)
         {
-            this.waveData = this.waveManager.GetWaveData(this.name);
+            this.waveData = this.waveManager.GetWaveDataByID(id);
         }
     }
 
@@ -42,6 +40,37 @@ public class WaveCtrl : PMonoBehaviour
     {
         //this.path = EnemyManager.instance.GetMovingPath(this.waveData.pathName);
         this.path = GameObject.Find(this.waveData.pathName).transform;
+    }
+
+    public virtual void CreateWave(WAVE_ID id)
+    {
+        this.LoadComponents();
+        this.LoadWaveInfo(id);
+        this.LoadPath();
+    }
+
+    public virtual void StartSpawning()
+    {
+        if (this.waveStatus == WAVE_STATUS.REARY_TO_SPAWN)
+        {
+            StartCoroutine(SpawnEnemy());
+        }
+        else
+        {
+            Debug.Log("Wave in " + this.waveStatus);
+        }
+    }
+
+    public virtual void ResumeSpawn()
+    {
+        this.waveStatus = WAVE_STATUS.REARY_TO_SPAWN;
+        this.StartSpawning();
+    }
+
+    public virtual void StopSpawning()
+    {
+        this.waveStatus = WAVE_STATUS.COMPLETE;
+        DestroyImmediate(this);
     }
 
     protected virtual IEnumerator SpawnEnemy()
@@ -66,58 +95,6 @@ public class WaveCtrl : PMonoBehaviour
         }
 
         this.waveStatus = WAVE_STATUS.COMPLETE;
-
-        //foreach (string e in this.waveData.enemyList)
-        //{
-        //    Transform newEnemy = EnemyManager.instance.SpawnEnemy(e, transform.position);
-        //    newEnemy.gameObject.SetActive(true);
-        //    MoveByPath newEnemyMoving = newEnemy.GetComponentInChildren<MoveByPath>();
-        //    newEnemyMoving.LoadCheckPoints(this.path);
-        //    newEnemyMoving.StartMoving();
-
-        //    yield return new WaitForSeconds(this.waveData.spawnBetweenDelay);
-        //}
-    }
-
-    public virtual void StartSpawning()
-    {
-        if (this.waveStatus == WAVE_STATUS.REARY_TO_SPAWN)
-        {
-            //this.LoadComponents();
-            StartCoroutine(SpawnEnemy());
-        }
-    }
-
-    public virtual void PauseSpawn(float pauseForSeconds = 0f)
-    {
-        StartCoroutine(PauseWaveForSeconds(pauseForSeconds));
-    }
-
-    public virtual void PauseSpawn()
-    {
-        this.PauseSpawn(0f);
-    }
-
-    public virtual void ResumeSpawn()
-    {
-        this.waveStatus = WAVE_STATUS.REARY_TO_SPAWN;
-        this.StartSpawning();
-    }
-
-    public virtual void StopSpawning()
-    {
-        this.waveStatus = WAVE_STATUS.COMPLETE;
-        DestroyImmediate(this);
-    }
-
-    protected virtual IEnumerator PauseWaveForSeconds(float sec)
-    {
-        this.waveStatus = WAVE_STATUS.PAUSE;
-        if (sec != 0)
-        {
-            yield return new WaitForSeconds(sec);
-            this.waveStatus = WAVE_STATUS.PAUSE;
-        }
     }
 
     public virtual bool IsWaveComplete()

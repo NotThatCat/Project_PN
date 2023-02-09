@@ -22,10 +22,12 @@ public class TestManager : PMonoBehaviour
     {
         if (this.test)
         {
-            this.state = StateManager.instance.GetCurrentStateSO();
-            this.stateId = StateManager.instance.GetCurrentStateID();
-            //WaveManagerTest.instance.LoadStateWave(this.state.stateWaves);
-            StateManager.instance.StartState(this.stateId);
+            //this.state = StateManager.instance.GetCurrentStateSO();
+            //this.stateId = StateManager.instance.GetCurrentStateID();
+            ////WaveManagerTest.instance.LoadStateWave(this.state.stateWaves);
+            //StateManager.instance.StartState(this.stateId);
+
+            Debug.Log(transform.rotation.eulerAngles);
         }
     }
 

@@ -24,7 +24,7 @@ public class BulletManager : PMonoBehaviour
 
     protected override void Awake()
     {
-        if (BulletManager.instance != this && BulletManager.instance != null) Debug.Log("Only allow one EffectManager");
+        if (BulletManager.instance != this && BulletManager.instance != null) Debug.Log("Only allow one BulletManager");
         BulletManager.instance = this;
     }
 
