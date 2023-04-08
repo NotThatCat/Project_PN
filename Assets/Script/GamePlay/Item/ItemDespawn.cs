@@ -12,6 +12,6 @@ public class ItemDespawn : Despawn
     /// </summary>
     protected override void AfterDespawan()
     {
-        EffectManager.instance.Spawn(effectName, transform.position);
+        EffectSpawner.Instance.Spawn(effectName, transform.position);
     }
 }

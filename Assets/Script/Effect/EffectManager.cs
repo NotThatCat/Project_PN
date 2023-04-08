@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EffectManager : PMonoBehaviour
 {
-    public static EffectManager instance;
+    private static EffectManager instance;
+    public static EffectManager Instance => instance;
     [SerializeField] public string holderName = "EffectHolder";
     [SerializeField] public Transform effectHolder;
     [SerializeField] public string effectListName = "EffectList";

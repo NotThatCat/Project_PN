@@ -5,32 +5,21 @@ using UnityEngine;
 
 public class EnemyCtrl : PMonoBehaviour
 {
-    [SerializeField] protected EnemyManager enemyManager;
     [SerializeField] public EnemyMoving enemyMoving;
     [SerializeField] public Despawn despawn;
     [SerializeField] public Level level;
+    [SerializeField] public EnemyData enemyData;
+    [SerializeField] public EnemyAttackCtrl enemyAttackCtrl;
 
+    #region LoadData
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        this.LoadEnemyManager();
         this.LoadEnemyMoving();
         this.LoadDespawn();
         this.LoadLevel();
-    }
-
-    protected override void Awake()
-    {
-
-    }
-
-    protected virtual void LoadEnemyManager()
-    {
-        this.enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
-        if (this.enemyManager == null)
-        {
-            Debug.Log("Cannot Find EnemyManager");
-        }
+        this.LoadEnemyData();
+        this.LoadEnemyAttackCtrl();
     }
 
     protected virtual void LoadLevel()
@@ -56,5 +45,37 @@ public class EnemyCtrl : PMonoBehaviour
     protected virtual void LoadEnemyMoving()
     {
         this.enemyMoving = transform.GetComponentInChildren<EnemyMoving>();
+    }
+
+    protected virtual void LoadEnemyData()
+    {
+
+        if (this.enemyData != null) return;
+        string resPath = "Enemy/" + transform.name;
+        this.enemyData = Resources.Load<EnemyData>(resPath);
+    }
+
+    protected virtual void LoadEnemyAttackCtrl()
+    {
+        this.enemyAttackCtrl = transform.GetComponentInChildren<EnemyAttackCtrl>();
+    }
+
+    #endregion
+
+    protected override void Awake()
+    {
+
+    }
+
+    public virtual List<DropRate> GetDrop()
+    {
+        if(enemyData == null) return null;
+        if(enemyData.dropList != null) return enemyData.dropList;
+        return null;
+    }
+
+    public virtual void StartDefaultAttack()
+    {
+        this.enemyAttackCtrl.DefaultAttack();
     }
 }

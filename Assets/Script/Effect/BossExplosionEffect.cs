@@ -38,7 +38,8 @@ public class BossExplosionEffect : PMonoBehaviour
         {
             foreach (Transform pos in this.explorePos)
             {
-                EffectManager.instance.Spawn(this.effectName, pos.position);
+                Transform effectPrf = EffectSpawner.Instance.Spawn(this.effectName, pos.position, transform.rotation);
+                effectPrf.gameObject.SetActive(true);
                 yield return new WaitForSeconds(this.delay);
             }
         }

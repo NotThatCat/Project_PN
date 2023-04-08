@@ -6,7 +6,15 @@ public class BulletFly : PMonoBehaviour
 {
     [SerializeField] protected BulletCtrl bulletCtrl;
     [SerializeField] public float speed = 5f;
+    [SerializeField] protected float currentSpeed = 5f;
     [SerializeField] protected bool stopFly = false;
+
+    public override void ResetValue()
+    {
+        this.currentSpeed = this.speed;
+        base.ResetValue();
+    }
+
     protected override void LoadComponents()
     {
         base.LoadComponents();
@@ -27,6 +35,6 @@ public class BulletFly : PMonoBehaviour
 
     protected virtual void Fly()
     {
-        transform.parent.Translate(Vector3.up * this.speed * Time.deltaTime);
+        transform.parent.Translate(Vector3.up * this.currentSpeed * Time.deltaTime);
     }
 }

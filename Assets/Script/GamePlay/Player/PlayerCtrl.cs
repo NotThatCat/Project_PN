@@ -56,9 +56,11 @@ public class PlayerCtrl : PMonoBehaviour
         this.playerAttackCtrl = transform.GetComponentInChildren<PlayerAttackCtrl>();
     }
 
-    public virtual void ChangeSkill(int idx)
+    public virtual void ChangeSkill(string skillName)
     {
-        this.playerAttackCtrl.ChangeSkill(idx);
+        this.playerAttackCtrl.StopAllSkillType(SKILL_TYPE.DEFAULT);
+        this.playerAttackCtrl.ChangeSkill(skillName);
+        this.Attack();
     }
 
     public virtual void NextSkill(int idx)
@@ -70,6 +72,11 @@ public class PlayerCtrl : PMonoBehaviour
     public virtual void Attack()
     {
         this.playerAttackCtrl.Attack();
+    }
+
+    public virtual void SpecialAttack(string skillName)
+    {
+        this.playerAttackCtrl.Attack(skillName);
     }
 
     public virtual void TurnRight()
@@ -86,4 +93,5 @@ public class PlayerCtrl : PMonoBehaviour
     {
         this.playerPlaneCtrl.planeAnimator.Idle();
     }
+
 }

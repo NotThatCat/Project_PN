@@ -69,4 +69,11 @@ public class MoveAcceleration : MoveByPath
 
         return speed;
     }
+
+    public override void ResetValue()
+    {
+        base.ResetValue();
+        this.baseMovingSpeed = this.enemyCtrl.enemyData.baseMovingSpeed;
+        this.acceleration = this.enemyCtrl.enemyData.acceleration;
+    }
 }

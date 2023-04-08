@@ -19,6 +19,7 @@ public class EnemyMoving : PMonoBehaviour
 
     protected virtual void LoadEnemyCtrl()
     {
+        if (this.enemyCtrl != null) return;
         this.enemyCtrl = transform.parent.GetComponent<EnemyCtrl>();
     }
 
@@ -61,5 +62,11 @@ public class EnemyMoving : PMonoBehaviour
     public virtual void StopMoving()
     {
         this.startMoving = false;
+    }
+
+    public override void ResetValue()
+    {
+        base.ResetValue();
+        this.movingSpeed = this.enemyCtrl.enemyData.speed;
     }
 }

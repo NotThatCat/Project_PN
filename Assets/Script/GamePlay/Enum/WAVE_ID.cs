@@ -51,4 +51,9 @@ public enum WAVE_ID
     B_18,
     B_19,
     B_20,
+    Test_01,
+    Test_02,
+    Test_03,
+    Test_04,
+    Test_05,
 }

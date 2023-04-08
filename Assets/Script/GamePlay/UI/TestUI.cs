@@ -7,11 +7,13 @@ public class TestUI : PMonoBehaviour
 {
     public virtual void NextSkill()
     {
-        PlayerCtrl.instance.NextSkill(1);
+        Debug.Log("PlayerCtrl.instance.NextSkill(1);");
+        // PlayerCtrl.instance.NextSkill(1);
     }
 
     public virtual void PreviousSkill()
     {
-        PlayerCtrl.instance.NextSkill(-1);
+        Debug.Log("PlayerCtrl.instance.NextSkill(-1);");
+        // PlayerCtrl.instance.NextSkill(-1);
     }
 }

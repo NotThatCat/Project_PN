@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class ItemManager : PMonoBehaviour
 {
-    public static ItemManager instance;
+    private static ItemManager instance;
+    public static ItemManager Instance => instance;
+
     [SerializeField] public string holderName = "ItemHolder";
     [SerializeField] public Transform itemHolder;
     [SerializeField] public List<Transform> items;
@@ -18,7 +20,7 @@ public class ItemManager : PMonoBehaviour
 
     protected override void Awake()
     {
-        if (ItemManager.instance != this && BulletManager.instance != null) Debug.Log("Only allow one ItemManager");
+        if (ItemManager.instance != this && ItemManager.instance != null) Debug.Log("Only allow one ItemManager");
         ItemManager.instance = this;
     }
 

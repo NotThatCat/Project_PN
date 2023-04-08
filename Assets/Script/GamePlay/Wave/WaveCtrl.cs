@@ -79,11 +79,14 @@ public class WaveCtrl : PMonoBehaviour
         for (int i = this.currentIndex; i < this.waveData.enemyList.Count; i++)
         {
             Vector3 spawnPosition = this.path.GetChild(0).position;
-            Transform newEnemy = EnemyManager.instance.SpawnEnemy(this.waveData.enemyList[i], spawnPosition);
+            //Transform newEnemy = EnemyManager.instance.SpawnEnemy(this.waveData.enemyList[i], spawnPosition);
+            Transform newEnemy = EnemySpawner.Instance.Spawn(this.waveData.enemyList[i], spawnPosition, transform.rotation);
             if (newEnemy != null)
             {
                 MoveByPath newEnemyMoving = newEnemy.GetComponentInChildren<MoveByPath>();
                 newEnemyMoving.LoadCheckPoints(this.path);
+                newEnemy.gameObject.SetActive(true);
+                newEnemy.GetComponent<EnemyCtrl>()?.StartDefaultAttack();
                 newEnemyMoving.StartMoving();
             }
             else

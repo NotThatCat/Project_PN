@@ -21,6 +21,21 @@ public class SkillCtrl : PMonoBehaviour
     [SerializeField] protected float finalDelay = 0f;
     [SerializeField] protected float finalCoolDown = 0f;
 
+    [SerializeField] protected float cooldownLeft = 0f;
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        if(this.attackStatus == ATTACK_STATUS.IN_COOLDOWN)
+        {
+            this.ClockCooldownLeft();
+        }
+    }
+
+    protected virtual void ClockCooldownLeft()
+    {
+        this.cooldownLeft -= Time.deltaTime;
+    }
 
     protected override void LoadComponents()
     {
@@ -101,10 +116,20 @@ public class SkillCtrl : PMonoBehaviour
         attackStatus = ATTACK_STATUS.READY_ATTACK;
     }
 
+    public virtual void StopSkillType(SKILL_TYPE skillType)
+    {
+        if(this.skillSO.skillType == skillType) this.StopAttack();
+    }
+
     public virtual void DisableAttack()
     {
         StopAllCoroutines();
         attackStatus = ATTACK_STATUS.DISABLE;
+    }
+
+    public virtual void EnableAttack()
+    {
+        attackStatus = ATTACK_STATUS.READY_ATTACK;
     }
 
     public virtual float GetDelay()
@@ -213,9 +238,9 @@ public class SkillCtrl : PMonoBehaviour
     //Attact Process
     protected virtual void BeforeDelay()
     {
-        this.attackStatus = ATTACK_STATUS.IN_DELAY;
         this.BeforeDelayEffect();
         this.CaculateFinalDelay();
+        this.attackStatus = ATTACK_STATUS.IN_DELAY;
     }
     protected virtual void AfterDelay()
     {
@@ -233,9 +258,10 @@ public class SkillCtrl : PMonoBehaviour
     }
     protected virtual void BeforeCoolDown()
     {
-        this.attackStatus = ATTACK_STATUS.IN_COOLDOWN;
         this.BeforeCoolDownEffect();
         this.CaculateFinalCoolDown();
+        this.ClockCoolDown();
+        this.attackStatus = ATTACK_STATUS.IN_COOLDOWN;
     }
     protected virtual void AfterCoolDown()
     {
@@ -273,12 +299,16 @@ public class SkillCtrl : PMonoBehaviour
 
     }
 
+    protected virtual void ClockCoolDown()
+    {
+        this.cooldownLeft = this.finalCoolDown;
+    }
 
     protected virtual void CaculateFinalDelay()
     {
         if (this.skillSO.delayScaleWithLevel)
         {
-            this.finalDelay = this.skillSO.baseDelay - ((this.skillSO.maxDelay - this.skillSO.minDelay) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+            this.finalDelay = this.skillSO.baseDelay - ((this.skillSO.maxDelay - this.skillSO.minDelay) / (this.attackCtrl.GetMaxLevel())) * (this.attackCtrl.GetCurrentLevel());
         }
         else
         {
@@ -299,7 +329,7 @@ public class SkillCtrl : PMonoBehaviour
 
         if (this.skillSO.coolDownScaleWithLevel)
         {
-            this.finalCoolDown = this.skillSO.baseCoolDown - ((this.skillSO.maxCoolDown - this.skillSO.minCoolDown) / (this.attackCtrl.GetMaxLevel() - 1)) * (this.attackCtrl.GetCurrentLevel() - 1);
+            this.finalCoolDown = this.skillSO.baseCoolDown - ((this.skillSO.maxCoolDown - this.skillSO.minCoolDown) / (this.attackCtrl.GetMaxLevel())) * (this.attackCtrl.GetCurrentLevel());
         }
         else
         {
@@ -312,7 +342,18 @@ public class SkillCtrl : PMonoBehaviour
 
     protected virtual Transform SpawnBullet(Vector3 shootPosition, Quaternion rotation)
     {
-        Transform newBullet = BulletManager.instance.Spawn(this.skillSO.bulletName, shootPosition, rotation);
+        //Transform newBullet = BulletManager.instance.Spawn(this.skillSO.bulletName, shootPosition, rotation);
+        //BulletCtrl bulletCtrl = newBullet.GetComponent<BulletCtrl>();
+        //if (bulletCtrl == null) this.LogError("Missing BulletCtrl in newBullet");
+        //newBullet.gameObject.SetActive(true);
+
+        //BulletDamageSender damageSender = bulletCtrl.bulletDamageSender;
+        //if (damageSender == null) Debug.LogError("Bullet has no damage sender", bulletCtrl.gameObject);
+        //damageSender.damage = this.GetDamage();
+
+        //return newBullet;
+
+        Transform newBullet = BulletSpawner.Instance.Spawn(this.skillSO.bulletName, shootPosition, rotation);
         BulletCtrl bulletCtrl = newBullet.GetComponent<BulletCtrl>();
         if (bulletCtrl == null) this.LogError("Missing BulletCtrl in newBullet");
         newBullet.gameObject.SetActive(true);
@@ -342,5 +383,11 @@ public class SkillCtrl : PMonoBehaviour
     protected virtual void PlaySound()
     {
         SoundManager.instance.PlaySFX(this.skillSO.soundID);
+    }
+
+    public override void ResetValue()
+    {
+        base.ResetValue();
+        this.StopAttack();
     }
 }

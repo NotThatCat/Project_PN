@@ -4,8 +4,7 @@ using UnityEngine;
 
 public abstract class AttackCtrl : PMonoBehaviour
 {
-    [SerializeField] public List<Transform> skills;
-    [SerializeField] public List<SkillCtrl> skillCtrls;
+    [SerializeField] protected List<SkillCtrl> skillCtrls;
     [SerializeField] protected int defaultSkill = 0;
     [SerializeField] protected int currentSkill;
     [SerializeField] protected bool toogleDefaultAttack = true;
@@ -28,20 +27,35 @@ public abstract class AttackCtrl : PMonoBehaviour
 
     protected virtual void LoadSkills()
     {
-        this.skills = new List<Transform>();
         this.skillCtrls = new List<SkillCtrl>();
         foreach (Transform skill in transform)
         {
             SkillCtrl skillProcessCtrl = skill.GetComponent<SkillCtrl>();
-            if(skillProcessCtrl != null)
+            if (skillProcessCtrl != null)
             {
-                skills.Add(skill);
                 skillCtrls.Add(skill.GetComponent<SkillCtrl>());
             }
         }
 
-        if (this.skills.Count <= 0) this.LogError("Skill not found");
         if (this.skillCtrls.Count <= 0) this.LogError("SkillCtrl not found");
+    }
+
+    /// <summary>
+    /// Default Plane always attack
+    /// </summary>
+    protected override void Start()
+    {
+        base.FixedUpdate();
+        this.DefaultAttack();
+    }
+
+    public virtual void DefaultAttack()
+    {
+        if (this.toogleDefaultAttack)
+        {
+            this.Attack();
+            this.toogleDefaultAttack = false; /// break so that attack only happen once
+        }
     }
 
     /// <summary>
@@ -49,12 +63,8 @@ public abstract class AttackCtrl : PMonoBehaviour
     /// </summary>
     /// <param name="idx"></param>
     /// <returns></returns>
-    protected virtual bool UseSkill(int idx)
+    protected virtual bool StartSkill(int idx)
     {
-        if (this.currentSkill != idx)
-        {
-            this.StopSkill(this.currentSkill);
-        }
         return skillCtrls[idx].StartAttack();
     }
 
@@ -64,25 +74,12 @@ public abstract class AttackCtrl : PMonoBehaviour
     }
 
     /// <summary>
-    /// Default Plane always attack
-    /// </summary>
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        if (this.toogleDefaultAttack)
-        {
-            this.Attack();
-            this.toogleDefaultAttack = false; /// break so that attack only happen once
-        }
-    }
-
-    /// <summary>
     /// Overide for other control attack style
     /// </summary>
     /// <param name="idx"></param>
     public virtual bool Attack()
     {
-        return this.UseSkill(this.currentSkill);
+        return this.StartSkill(this.currentSkill);
     }
 
     /// <summary>
@@ -91,13 +88,20 @@ public abstract class AttackCtrl : PMonoBehaviour
     /// <param name="idx"></param>
     public virtual bool Attack(int idx)
     {
-        return this.UseSkill(idx);
+        return this.StartSkill(idx);
+    }
+
+    public virtual bool Attack(string skillName)
+    {
+        int skillIdx = this.GetSkillIndexByName(skillName);
+        if (skillIdx >= 0) return this.StartSkill(skillIdx);
+        return false;
     }
 
 
     public virtual int ChangeSkill(int idx)
     {
-        if (idx >= this.skills.Count || idx < 0) return this.currentSkill;
+        if (idx >= this.skillCtrls.Count || idx < 0) return this.currentSkill;
         this.StopSkill(this.currentSkill);
         return this.currentSkill = idx;
     }
@@ -105,6 +109,12 @@ public abstract class AttackCtrl : PMonoBehaviour
     public virtual void NextSkill(int value)
     {
         this.ChangeSkill(this.currentSkill + value);
+    }
+
+    public virtual void ChangeSkill(string skillName)
+    {
+        int skillIdx = this.GetSkillIndexByName(skillName);
+        if (skillIdx >= 0) ChangeSkill(skillIdx);
     }
 
     public virtual Sprite GetCurrentSkillImage()
@@ -117,6 +127,52 @@ public abstract class AttackCtrl : PMonoBehaviour
         return this.skillCtrls[this.currentSkill];
     }
 
+    public virtual void StopAllSkill()
+    {
+        foreach (SkillCtrl skill in this.skillCtrls)
+        {
+            this.StopSkill(skill);
+        }
+    }
+
+    public virtual void StopAllSkillType(SKILL_TYPE skillType = SKILL_TYPE.DEFAULT)
+    {
+        foreach (SkillCtrl sk in this.skillCtrls)
+        {
+            sk.StopSkillType(skillType);
+        }
+    }
+
+    public virtual void StopSkill(SkillCtrl skill)
+    {
+        skill.StopAttack();
+    }
+
+    protected virtual int GetSkillIndexByName(string skillName)
+    {
+        int skillIdx = -1;
+        for (int i = 0; i < this.skillCtrls.Count; i++)
+        {
+            if (skillCtrls[i].name != skillName) continue;
+            skillIdx = i;
+        }
+
+        if (skillIdx < 0) Debug.Log(skillName = " Not Found");
+
+        return skillIdx;
+    }
+
     public abstract int GetMaxLevel();
     public abstract int GetCurrentLevel();
+
+    public override void ResetValue()
+    {
+        base.ResetValue();
+        foreach (SkillCtrl skill in this.skillCtrls) { skill.ResetValue(); }
+        this.defaultSkill = this.GetDefaultSkill();
+        this.currentSkill = this.defaultSkill;
+        this.toogleDefaultAttack = true;
+    }
+
+    protected abstract int GetDefaultSkill();
 }

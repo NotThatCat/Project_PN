@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,27 +10,40 @@ public class UIIngame : PMonoBehaviour
     [SerializeField] protected UIManager uiManager;
     [SerializeField] public Slider playerHPBar;
     [SerializeField] public Slider playerLevelBar;
+    [SerializeField] public Slider playerSkillBarLeft;
+    [SerializeField] public Slider playerSkillBarRight;
     [SerializeField] public Slider bossHPBar;
     [SerializeField] public Image playerCurrentSkillImage;
+    [SerializeField] protected Transform skill;
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
         this.LoadUIManager();
-        this.LoadPlayerHPBar();
         this.LoadBossHPBar();
+        this.LoadPlayerUI();
+    }
+
+    protected virtual void LoadPlayerUI()
+    {
+        this.skill = transform.Find("Skill");
+        if (skill == null) return;
+
+        this.LoadPlayerHPBar();
+        this.LoadPlayerLeverBar();
         this.LoadPlayerCurrentSkillImage();
+        this.LoadPlayerSpecialSkill();
+    }
+
+    protected virtual void LoadPlayerSpecialSkill()
+    {
+        this.playerSkillBarLeft = this.skill.Find("PlayerSkillLeft").GetComponent<Slider>();
+        this.playerSkillBarRight = this.skill.Find("PlayerSkillRight").GetComponent<Slider>();
     }
 
     private void LoadPlayerCurrentSkillImage()
     {
-        this.playerCurrentSkillImage = transform.Find("PlayerCurrentSkill").GetComponent<Image>();
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        this.bossHPBar.gameObject.SetActive(false);
+        this.playerCurrentSkillImage = this.skill.Find("PlayerCurrentSkill").GetComponent<Image>();
     }
 
     protected virtual void LoadUIManager()
@@ -39,7 +53,18 @@ public class UIIngame : PMonoBehaviour
 
     protected virtual void LoadPlayerHPBar()
     {
-        this.playerHPBar = transform.Find("PlayerHPBar").GetComponent<Slider>();
+        this.playerHPBar = this.skill.Find("PlayerHPBar").GetComponent<Slider>();
+    }
+
+    protected virtual void LoadPlayerLeverBar()
+    {
+        this.playerLevelBar = this.skill.Find("PlayerLevelBar").GetComponent<Slider>();
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        this.bossHPBar.gameObject.SetActive(false);
     }
 
     protected virtual void LoadBossHPBar()
@@ -81,5 +106,11 @@ public class UIIngame : PMonoBehaviour
     public virtual void UpdatePlayerCurrentSkill(Sprite image)
     {
         this.playerCurrentSkillImage.sprite = image;
+    }
+
+    public virtual void UpdateSpecialSkill(float value)
+    {
+        this.playerSkillBarLeft.value = value;
+        this.playerSkillBarRight.value = value;
     }
 }

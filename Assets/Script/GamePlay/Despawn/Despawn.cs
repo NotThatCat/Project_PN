@@ -9,7 +9,7 @@ public class Despawn : PMonoBehaviour
     /// </summary>
     public virtual void Despawning()
     {
-        if (this.ReadyToDespawn())
+        if (this.IsReadyToDespawn())
         {
             this.DespawnNow();
             this.AfterDespawan();
@@ -20,7 +20,7 @@ public class Despawn : PMonoBehaviour
     /// When you call Despawning, are you sure this is the time to despawn? This will prevent any unwanted despawn.
     /// </summary>
     /// <returns>bool, Default true</returns>
-    protected virtual bool ReadyToDespawn()
+    protected virtual bool IsReadyToDespawn()
     {
         return true;
     }

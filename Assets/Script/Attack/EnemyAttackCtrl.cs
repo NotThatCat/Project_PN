@@ -26,4 +26,9 @@ public class EnemyAttackCtrl : AttackCtrl
     {
         return this.enemyCtrl.GetCurrentLevel();
     }
+
+    protected override int GetDefaultSkill()
+    {
+        return 0;
+    }
 }

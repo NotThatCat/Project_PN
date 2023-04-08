@@ -6,12 +6,10 @@ using UnityEngine;
 public class BossCtrl : EnemyCtrl
 {
     [SerializeField] protected DamageReceiver bossDamageReceiver;
-    [SerializeField] protected BossData bossData;
 
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        this.LoadBossData();
         this.LoadDamageReceiver();
     }
 
@@ -30,13 +28,14 @@ public class BossCtrl : EnemyCtrl
         UIManager.instance.ActiveBossHPBar(this.bossDamageReceiver.hp / this.bossDamageReceiver.maxHp);
     }
 
-    protected virtual void LoadBossData()
+    public override void ResetValue()
     {
-        this.bossData = this.enemyManager.GetBossData(transform.name);
+        base.ResetValue();
+        this.ActiveBossHPBar();
     }
 
-    internal BossData GetBossData()
+    protected virtual void ActiveBossHPBar()
     {
-        return this.bossData;
+        UIManager.instance.ActiveBossHPBar(this.bossDamageReceiver.hp / this.bossDamageReceiver.maxHp);
     }
 }

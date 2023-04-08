@@ -6,19 +6,20 @@ using UnityEngine;
 public class SkillSO : ScriptableObject
 {
     [SerializeField] public Sprite image;
+    [SerializeField] public SKILL_TYPE skillType = SKILL_TYPE.DEFAULT;
     [Header("Attack Delay")]
     [SerializeField] public bool useDelay = false;
     [SerializeField] public bool delayScaleWithLevel = true;
     [SerializeField] public float baseDelay = 0f;
     [SerializeField] public float minDelay = 0f;
-    [SerializeField] public float maxDelay = 0f;
+    [SerializeField] public float maxDelay = 10f;
 
     [Header("Cool Down")]
     [SerializeField] public bool useCoolDown = true;
     [SerializeField] public bool coolDownScaleWithLevel = true;
     [SerializeField] public float baseCoolDown = 0.2f;
     [SerializeField] public float minCoolDown = 0.05f;
-    [SerializeField] public float maxCoolDown = 0.2f;
+    [SerializeField] public float maxCoolDown = 10f;
 
     [Header("Effect")]
     [SerializeField] public SoundID soundID;

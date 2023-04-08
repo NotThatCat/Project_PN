@@ -51,6 +51,7 @@ public class MoveByPath : EnemyMoving
     public virtual void LoadCheckPoints(Transform path)
     {
         this.checkpointPath = path;
+        this.checkpointIndex = 0;
         this.checkpoints = new List<Transform>();
         foreach (Transform checkpoint in this.checkpointPath)
         {
@@ -61,5 +62,12 @@ public class MoveByPath : EnemyMoving
     protected virtual void Despawn()
     {
         enemyCtrl.despawn.Despawning();
+    }
+
+    public override void ResetValue()
+    {
+        this.startMoving = false;
+        this.checkpointIndex = 0;
+        base.ResetValue();
     }
 }

@@ -31,12 +31,18 @@ public class PMonoBehaviour : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+        this.ResetValue();
         //For override
     }
 
     protected virtual void OnDisable()
     {
         //For override
+    }
+
+    public virtual void ResetValue()
+    {
+
     }
 
     protected virtual void LoadComponents()

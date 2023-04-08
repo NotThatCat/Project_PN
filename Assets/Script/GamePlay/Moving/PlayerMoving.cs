@@ -8,6 +8,7 @@ public class PlayerMoving : PMonoBehaviour
     [SerializeField] protected Vector2 position;
     [SerializeField] protected Vector2 limitHorizon = new Vector2(-3.25f, 3.25f);
     [SerializeField] protected Vector2 limitVertical = new Vector2(4.5f, -4.5f);
+    [SerializeField] protected bool canMoving = false;
 
     protected override void LoadComponents()
     {
@@ -23,9 +24,17 @@ public class PlayerMoving : PMonoBehaviour
     // Update is called once per frame
     protected override void Update()
     {
-        this.GetPositionByMouse();
-        this.Move2Position();
-        this.UpdateAnimation();
+        this.ContinueMoving();
+    }
+
+    protected virtual void ContinueMoving()
+    {
+        if (canMoving)
+        {
+            this.GetPositionByMouse();
+            this.Move2Position();
+            this.UpdateAnimation();
+        }
     }
 
     protected virtual void Move2Position()
@@ -60,5 +69,15 @@ public class PlayerMoving : PMonoBehaviour
         {
             this.playerCtrl.Idle();
         }
+    }
+
+    public virtual void EnableMoving()
+    {
+        this.canMoving = true;
+    }
+
+    public virtual void DisableMoving()
+    {
+        this.canMoving = false;
     }
 }

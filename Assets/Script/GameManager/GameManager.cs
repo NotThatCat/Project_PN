@@ -30,10 +30,7 @@ public class GameManager : PMonoBehaviour
             instance = this;
         }
 
-        if (toogleState)
-        {
-            StateManager.instance.StartState(this.currentStateID);
-        }
+        this.StartGame();
     }
 
     internal void PlayerDeath()
@@ -51,11 +48,26 @@ public class GameManager : PMonoBehaviour
         return this.lastPlayerPostion;
     }
 
+    public void StartGame()
+    {
+        if (toogleState)
+        {
+            StateManager.instance.StartState(this.currentStateID);
+        }
+        this.EnablePlayer();
+    }
+
+    public virtual void EnablePlayer()
+    {
+        PlayerCtrl.instance.playerMovingCtrl.EnableMoving();
+    }
+
     public virtual void PauseGame()
     {
         Time.timeScale = 0;
         SoundManager.instance.PauseMusic();
         UIManager.instance.ShowUIPauseGame();
+        PlayerCtrl.instance.playerMovingCtrl.DisableMoving();
     }
 
     public virtual void ResumeGame()
@@ -63,6 +75,7 @@ public class GameManager : PMonoBehaviour
         Time.timeScale = 1;
         SoundManager.instance.ResumeMusic();
         UIManager.instance.ShowUIIngame();
+        PlayerCtrl.instance.playerMovingCtrl.EnableMoving();
     }
 
     public virtual void PlayerLevelUp()

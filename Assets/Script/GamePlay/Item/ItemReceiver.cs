@@ -6,6 +6,7 @@ public class ItemReceiver : PMonoBehaviour
 {
     public virtual void GetItemEffect(string effectName)
     {
-        EffectManager.instance.Spawn(effectName, transform.parent.position);
+        Transform newEffect = EffectSpawner.Instance.Spawn(effectName, transform.parent.position);
+        newEffect.gameObject.SetActive(true);
     }
 }

@@ -1,24 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDespawn : Despawn
 {
-
+    [SerializeField] protected EnemyCtrl enemyCtrl;
     [SerializeField] protected string effectName = "ExploreWhite";
     [SerializeField] protected bool dropable = false;
-    [SerializeField] protected string dropName = "None";
 
     /// <summary>
     /// Need to Instantiate any effect after despawn?
     /// </summary>
     protected override void AfterDespawan()
     {
-        EffectManager.instance.Spawn(effectName, transform.position);
+        this.EffectSpawn();
+        this.ItemSpawn();
+    }
 
-        if (this.dropable)
+    protected virtual void EffectSpawn()
+    {
+        Transform effectPrf = EffectSpawner.Instance.Spawn(effectName, transform.position, transform.rotation);
+        effectPrf.gameObject.SetActive(true);
+    }
+
+    protected virtual void ItemSpawn()
+    {
+        List<DropRate> dropList = this.enemyCtrl.GetDrop();
+        if (dropList == null) return;
+        if (this.enemyCtrl.enemyData.canDrop && this.enemyCtrl.enemyData.dropList.Count > 0)
         {
-            ItemManager.instance.Spawn(dropName, transform.parent.position);
+            //ItemManager.Instance.Spawn(dropName, transform.parent.position);
+            ItemSpawner.Instance.Drop(this.enemyCtrl.enemyData.dropList, transform.position, transform.rotation);
         }
+    }
+
+    protected override void LoadComponents()
+    {
+        this.LoadEnemyCtrl();
+        base.LoadComponents();
+    }
+
+    protected virtual void LoadEnemyCtrl()
+    {
+        this.enemyCtrl = transform.GetComponentInParent<EnemyCtrl>();
+    }
+
+    protected override void DespawnNow()
+    {
+        EnemySpawner.Instance.Despawn(transform.parent);
     }
 }

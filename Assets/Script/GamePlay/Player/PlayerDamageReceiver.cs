@@ -8,7 +8,7 @@ public class PlayerDamageReceiver : DamageReceiver
 
     protected override void Despawn()
     {
-        EffectManager.instance.Spawn(effectName, transform.position);
+        EffectSpawner.Instance.Spawn(effectName, transform.position);
         base.Despawn();
     }
 

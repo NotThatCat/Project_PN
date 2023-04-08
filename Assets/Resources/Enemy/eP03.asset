@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22bed567e02a3074f97a6ca26cb22c79, type: 3}
+  m_Name: eP03
+  m_EditorClassIdentifier: 
+  canDrop: 1
+  dropList:
+  - itemName: LevelUp
+    dropRate: 3000
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillBomb
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: Skill6
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: Skill27
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: Skill27
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: Skill29
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: Skill31
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: Skill37
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillDefault
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillDefault2
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillDefault3_1
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillDefault3_2
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillDefault3_3
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillDefault3_4
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  - itemName: SkillShotgun
+    dropRate: 300
+    minDrop: 1
+    maxDrop: 1
+  hp: 7
+  speed: 2
+  baseMovingSpeed: 0
+  acceleration: []

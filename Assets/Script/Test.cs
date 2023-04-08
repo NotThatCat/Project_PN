@@ -2,12 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : PMonoBehaviour
+public class Test : MonoBehaviour
 {
-    protected override void Reset()
+    [SerializeField] public Vector3 pos;
+
+    private void Awake()
     {
-        base.Reset();
-        Debug.Log(this.transform.localRotation);
-        Debug.Log(this.transform.rotation);
+        this.pos = this.transform.position;
     }
+
+    private void Update()
+    {
+        Debug.Log("Position: " + this.transform.position + " And Pos: " + this.pos);
+    }
+
+
+    //protected override void Reset()
+    //{
+    //    base.Reset();
+    //    Debug.Log(this.transform.localRotation);
+    //    Debug.Log(this.transform.rotation);
+    //}
+
+
+
 }

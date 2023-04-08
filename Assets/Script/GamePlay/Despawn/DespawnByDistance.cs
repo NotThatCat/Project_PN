@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DespawnByDistance : Despawn
+public class DespawnByDistance : BulletDespawn
 {
     [SerializeField] protected float despawnLimitX = 10f;
     [SerializeField] protected float despawnLimitY = 3.5f;

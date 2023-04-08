@@ -52,4 +52,9 @@ public class PlayerAttackCtrl : AttackCtrl
             return base.Attack();
         }
     }
+
+    protected override int GetDefaultSkill()
+    {
+        return 0;
+    }
 }

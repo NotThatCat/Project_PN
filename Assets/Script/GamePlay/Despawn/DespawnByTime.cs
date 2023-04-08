@@ -20,4 +20,39 @@ public class DespawnByTime : Despawn
 
         this.Despawning();
     }
+
+    //public override void ResetValue()
+    //{
+    //    this.timer = this.delay;
+    //    base.ResetValue();
+    //}
+
+    //protected override void FixedUpdate()
+    //{
+    //    this.Timing();
+    //    this.Despawning();
+    //}
+
+    //protected virtual void Timing()
+    //{
+    //    this.timer += Time.fixedDeltaTime;
+    //}
+
+    //protected override bool IsReadyToDespawn()
+    //{
+    //    if (this.timer < this.delay) return false;
+    //    return true;
+    //}
+
+    protected override void DespawnNow()
+    {
+        EffectSpawner.Instance.Despawn(transform.parent);
+    }
+
+    public override void ResetValue()
+    {
+        base.ResetValue();
+        this.timer = 0;
+    }
+
 }

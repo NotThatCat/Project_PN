@@ -6,16 +6,8 @@ public class DamageReceiver : PMonoBehaviour
     [SerializeField] public float hp = 0;
     [SerializeField] public float maxHp = 1;
     [SerializeField] protected BULLET_SOURCEDAMAGE takeDamageFrom = BULLET_SOURCEDAMAGE.PLAYER;
+    [SerializeField] protected bool isDeath = false;
 
-    protected override void OnEnable()
-    {
-        this.ResetHP();
-    }
-
-    protected virtual void ResetHP()
-    {
-        this.hp = this.maxHp;
-    }
 
     /// <summary>
     /// Perform Damage without condition
@@ -24,12 +16,16 @@ public class DamageReceiver : PMonoBehaviour
     /// <returns>If damage success</returns>
     public virtual bool Damaged(float damage)
     {
-        this.TakeDamagedEffect();
-        this.DecreaseHP(damage);
-        if (this.hp <= 0) this.hp = 0;
+        if (!this.isDeath)
+        {
+            this.DecreaseHP(damage);
+            this.TakeDamagedEffect();
+            if (this.hp <= 0) this.hp = 0;
 
-        this.Dying();
-        return true;
+            this.Dying();
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -42,12 +38,7 @@ public class DamageReceiver : PMonoBehaviour
     {
         if (sourceDamage == this.takeDamageFrom)
         {
-            this.DecreaseHP(damage);
-            this.TakeDamagedEffect();
-            if (this.hp <= 0) this.hp = 0;
-
-            this.Dying();
-            return true;
+           return this.Damaged(damage);
         }
         return false;
     }
@@ -73,6 +64,7 @@ public class DamageReceiver : PMonoBehaviour
 
     protected virtual void Death()
     {
+        this.isDeath = true;
         this.Despawn();
     }
 
@@ -84,6 +76,13 @@ public class DamageReceiver : PMonoBehaviour
     protected virtual void TakeDamagedEffect()
     {
 
+    }
+
+    public override void ResetValue()
+    {
+        this.hp = this.maxHp;
+        this.isDeath = false;
+        base.ResetValue();
     }
 
 }

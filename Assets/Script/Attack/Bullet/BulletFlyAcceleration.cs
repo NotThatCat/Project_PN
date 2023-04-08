@@ -18,7 +18,7 @@ public class BulletFlyAcceleration : BulletFly
     {
         if(this.acceleration > 0)
         {
-            if (this.speed > this.maxSpeed)
+            if (this.currentSpeed > this.maxSpeed)
             {
                 return;
             }
@@ -26,18 +26,18 @@ public class BulletFlyAcceleration : BulletFly
 
         if (this.acceleration < 0)
         {
-            if (this.speed < this.maxSpeed)
+            if (this.currentSpeed < this.maxSpeed)
             {
                 this.MaxSpeedEffect();
                 return;
             }
         }
-        this.speed = this.speed + this.acceleration * Time.deltaTime;
+        this.currentSpeed = this.currentSpeed + this.acceleration * Time.deltaTime;
     }
 
     protected virtual void MaxSpeedEffect()
     {
-        this.speed = this.maxSpeed;
+        this.currentSpeed = this.maxSpeed;
         this.bulletCtrl.despawn.Despawning();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public enum SKILL_TYPE
 {
     DEFAULT = 0,
-    SPEAR = 1,
-    WAVE = 2,
+    PASSIVE = 1,
+    ACTIVE = 2,
+    SPECIAL = 3,
 }

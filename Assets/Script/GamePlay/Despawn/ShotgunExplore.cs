@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotgunExplore : Despawn
+public class ShotgunExplore : BulletDespawn
 {
     [SerializeField] protected BulletCtrl bulletCtrl;
     [SerializeField] protected string childName;
@@ -52,7 +52,7 @@ public class ShotgunExplore : Despawn
 
     protected virtual Transform SpawnBullet(Quaternion rotation)
     {
-        Transform newBullet = BulletManager.instance.Spawn(childName, transform.position, rotation);
+        Transform newBullet = BulletSpawner.Instance.Spawn(childName, transform.position, rotation);
         BulletCtrl bulletCtrl = newBullet.GetComponent<BulletCtrl>();
         if (bulletCtrl == null) this.LogError("Missing BulletCtrl in newBullet");
         newBullet.gameObject.SetActive(true);
