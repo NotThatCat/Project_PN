@@ -4,35 +4,30 @@ using UnityEngine;
 
 public class WaveCtrl : PMonoBehaviour
 {
-    [SerializeField] protected WaveManager waveManager;
     [SerializeField] public WaveData waveData;
+    [SerializeField] public WAVE_ID waveID;
     [SerializeField] protected Transform path;
     [SerializeField] protected WAVE_STATUS waveStatus = WAVE_STATUS.REARY_TO_SPAWN;
     [SerializeField] protected int currentIndex;
 
+    private Coroutine currentSpawnEnemy;
+
     public virtual void ResetWave()
     {
-        StopAllCoroutines();
-        this.currentIndex = 0;
-        this.waveStatus = WAVE_STATUS.REARY_TO_SPAWN;
+        this.Reset();
     }
 
     protected override void LoadComponents()
     {
-        this.LoadWaveManager();
+
     }
 
-    protected virtual void LoadWaveManager()
-    {
-        this.waveManager = WaveManager.instance;
-        //this.waveManager = transform.parent.parent.GetComponent<WaveManagerTest>();
-    }
 
     protected virtual void LoadWaveInfo(WAVE_ID id)
     {
         if (this.waveData || this.waveData == null)
         {
-            this.waveData = this.waveManager.GetWaveDataByID(id);
+            this.waveData = WaveManager.instance.GetWaveDataByID(id);
         }
     }
 
@@ -44,16 +39,27 @@ public class WaveCtrl : PMonoBehaviour
 
     public virtual void CreateWave(WAVE_ID id)
     {
+        this.waveID = id;
         this.LoadComponents();
         this.LoadWaveInfo(id);
         this.LoadPath();
+    }
+
+    protected override void Reset()
+    {
+        if (this.currentSpawnEnemy != null)
+        {
+            StopAllCoroutines();
+        }
+        this.currentIndex = 0;
+        this.waveStatus = WAVE_STATUS.REARY_TO_SPAWN;
     }
 
     public virtual void StartSpawning()
     {
         if (this.waveStatus == WAVE_STATUS.REARY_TO_SPAWN)
         {
-            StartCoroutine(SpawnEnemy());
+            StartCoroutine(StartSpawnEnemy());
         }
         else
         {
@@ -61,48 +67,56 @@ public class WaveCtrl : PMonoBehaviour
         }
     }
 
-    public virtual void ResumeSpawn()
-    {
-        this.waveStatus = WAVE_STATUS.REARY_TO_SPAWN;
-        this.StartSpawning();
-    }
 
-    public virtual void StopSpawning()
-    {
-        this.waveStatus = WAVE_STATUS.COMPLETE;
-        DestroyImmediate(this);
-    }
-
-    protected virtual IEnumerator SpawnEnemy()
+    protected virtual IEnumerator StartSpawnEnemy()
     {
         this.waveStatus = WAVE_STATUS.SPAWNING;
         for (int i = this.currentIndex; i < this.waveData.enemyList.Count; i++)
         {
-            Vector3 spawnPosition = this.path.GetChild(0).position;
-            //Transform newEnemy = EnemyManager.instance.SpawnEnemy(this.waveData.enemyList[i], spawnPosition);
-            Transform newEnemy = EnemySpawner.Instance.Spawn(this.waveData.enemyList[i], spawnPosition, transform.rotation);
-            if (newEnemy != null)
-            {
-                MoveByPath newEnemyMoving = newEnemy.GetComponentInChildren<MoveByPath>();
-                newEnemyMoving.LoadCheckPoints(this.path);
-                newEnemy.gameObject.SetActive(true);
-                newEnemy.GetComponent<EnemyCtrl>()?.StartDefaultAttack();
-                newEnemyMoving.StartMoving();
-            }
-            else
-            {
-                Debug.Log("SpawnEnemy Fail");
-            }
-
+            this.SpawnEnemy(this.waveData.enemyList[i]);
             yield return new WaitForSeconds(this.waveData.spawnBetweenDelay);
         }
 
         this.waveStatus = WAVE_STATUS.COMPLETE;
+
+        WaveManager.instance.DeSpawnWave(this.waveID);
     }
 
-    public virtual bool IsWaveComplete()
+    protected virtual void SpawnEnemy(string enemyName)
     {
-        if (this.waveStatus == WAVE_STATUS.COMPLETE) return true;
-        return false;
+        Vector3 spawnPosition = this.path.GetChild(0).position;
+        //Transform newEnemy = EnemyManager.instance.SpawnEnemy(this.waveData.enemyList[i], spawnPosition);
+        Transform newEnemy = EnemySpawner.Instance.Spawn(enemyName, spawnPosition, transform.rotation);
+        if (newEnemy != null)
+        {
+            MoveByPath newEnemyMoving = newEnemy.GetComponentInChildren<MoveByPath>();
+            if (newEnemyMoving != null)
+            {
+                switch (newEnemyMoving.type)
+                {
+                    case MOVING_TYPE.PATH:
+                        newEnemyMoving.LoadCheckPoints(this.path);
+                        newEnemy.gameObject.SetActive(true);
+                        newEnemy.GetComponent<EnemyCtrl>()?.StartDefaultAttack();
+                        newEnemyMoving.StartMoving();
+                        break;
+
+                    case MOVING_TYPE.FOLLOW_TARGET:
+
+                        break;
+
+                    case MOVING_TYPE.ACC:
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("SpawnEnemy Fail");
+        }
     }
 }

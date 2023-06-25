@@ -27,11 +27,6 @@ public class BossExplosionEffect : PMonoBehaviour
         }
     }
 
-    protected override void Start()
-    {
-        StartCoroutine(ExploreEffect());
-    }
-
     protected virtual IEnumerator ExploreEffect()
     {
         while (this.loop)
@@ -43,5 +38,17 @@ public class BossExplosionEffect : PMonoBehaviour
                 yield return new WaitForSeconds(this.delay);
             }
         }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        StopAllCoroutines();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        StartCoroutine(ExploreEffect());
     }
 }

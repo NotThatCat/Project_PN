@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 public class EnemyMoving : PMonoBehaviour
@@ -7,9 +8,11 @@ public class EnemyMoving : PMonoBehaviour
     [SerializeField] protected EnemyCtrl enemyCtrl;
 
     [Header("Moving")]
-    [SerializeField] protected float movingSpeed = 2f;
+    [SerializeField] public MOVING_TYPE type = MOVING_TYPE.PATH;
+    [SerializeField] public float movingSpeed = 2f;
     [SerializeField] protected bool startMoving = false;
     [SerializeField] protected bool movingComplete = false;
+    [SerializeField] protected Vector3 targetPosition;
 
     protected override void LoadComponents()
     {
@@ -25,15 +28,19 @@ public class EnemyMoving : PMonoBehaviour
 
     protected override void Update()
     {
-        if (this.startMoving)
+        if (this.startMoving && this.targetPosition != null)
         {
             this.Moving();
         }
     }
 
+    protected virtual void SetTargetMoving(Vector3 pos)
+    {
+        this.targetPosition = pos;
+    }
+
     protected virtual void Moving()
     {
-        Vector3 targetPosition = GameManager.instance.GetPlayerPosition();
         MovingToPosition(targetPosition);
     }
 

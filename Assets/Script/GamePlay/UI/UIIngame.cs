@@ -108,9 +108,26 @@ public class UIIngame : PMonoBehaviour
         this.playerCurrentSkillImage.sprite = image;
     }
 
-    public virtual void UpdateSpecialSkill(float value)
+    protected virtual void UpdateSpecialSkill(float value)
     {
         this.playerSkillBarLeft.value = value;
         this.playerSkillBarRight.value = value;
+    }
+
+    public virtual void UpdateSpecialSkill(float currentValue, float maxValue)
+    {
+        this.UpdateSpecialSkill((maxValue - currentValue) / maxValue);
+    }
+
+    protected override void OnEnable()
+    {
+        base.Start();
+        PlayerCtrl.instance.RegisOnSkillCoolDown(this.UpdateSpecialSkill);
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        PlayerCtrl.instance.UnRegisOnSkillCoolDown(this.UpdateSpecialSkill);
     }
 }

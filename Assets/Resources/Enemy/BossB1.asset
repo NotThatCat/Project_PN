@@ -22,7 +22,7 @@ MonoBehaviour:
     dropRate: 50000
     minDrop: 1
     maxDrop: 1
-  hp: 40
-  speed: 2
+  hp: 800
+  speed: 1
   baseMovingSpeed: 0
   acceleration: []

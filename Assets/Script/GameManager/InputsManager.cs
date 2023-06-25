@@ -34,7 +34,7 @@ public class InputsManager : PMonoBehaviour
 
     protected virtual void InputPlayerSkill()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) PlayerCtrl.instance.SpecialAttack("TestSkill");
+        if (Input.GetKeyDown(KeyCode.Space)) PlayerCtrl.instance.SpecialAttack();
         if (Input.GetKeyDown(KeyCode.A)) PlayerCtrl.instance.level.Down();
         if (Input.GetKeyDown(KeyCode.D)) PlayerCtrl.instance.level.Up();
     }

@@ -16,10 +16,10 @@ MonoBehaviour:
   musicID: 2
   stateWaves:
   - waveId: 1
-    spawnAt: 5
+    spawnAt: 2
   - waveId: 1
-    spawnAt: 20
+    spawnAt: 502
   - waveId: 1
-    spawnAt: 35
+    spawnAt: 1004
   - waveId: 1
-    spawnAt: 50
+    spawnAt: 1506

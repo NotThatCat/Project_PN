@@ -1,14 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerAttackCtrl : AttackCtrl
 {
     [SerializeField] protected PlayerCtrl playerCtrl;
-    [SerializeField] protected bool isTesting = false;
-
-    //Testing
-    [SerializeField] protected SkillCtrl testSkill;
+    [SerializeField] protected string currentSpecialSkill;
 
     protected override void LoadComponents()
     {
@@ -43,18 +42,22 @@ public class PlayerAttackCtrl : AttackCtrl
     //Testing
     public override bool Attack()
     {
-        if (isTesting)
-        {
-            return testSkill.StartAttack();
-        }
-        else
-        {
-            return base.Attack();
-        }
+        return base.Attack();
     }
 
     protected override int GetDefaultSkill()
     {
-        return 0;
+        return this.currentSkill;
+        //return 0;
+    }
+
+    public virtual void RegisOnSkillCoolDown(string skillName, Action<float, float> onCoolDown)
+    {
+        this.skillCtrls[this.GetSkillIndexByName(skillName)].OnCoolDown += onCoolDown;
+    }
+
+    public virtual void UnRegisOnSkillCoolDown(string skillName, Action<float, float> onCoolDown)
+    {
+        this.skillCtrls[this.GetSkillIndexByName(skillName)].OnCoolDown -= onCoolDown;
     }
 }

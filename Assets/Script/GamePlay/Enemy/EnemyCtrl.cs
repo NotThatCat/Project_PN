@@ -76,6 +76,7 @@ public class EnemyCtrl : PMonoBehaviour
 
     public virtual void StartDefaultAttack()
     {
+        if (this.enemyAttackCtrl == null) return;
         this.enemyAttackCtrl.DefaultAttack();
     }
 }

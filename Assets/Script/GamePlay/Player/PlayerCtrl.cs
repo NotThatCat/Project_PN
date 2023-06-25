@@ -10,6 +10,7 @@ public class PlayerCtrl : PMonoBehaviour
     [SerializeField] public PlayerAttackCtrl playerAttackCtrl;
     [SerializeField] public PlayerPlaneCtrl playerPlaneCtrl;
     [SerializeField] public Level level;
+    [SerializeField] protected string currentSpecialSkill = "TestSkill";
 
     protected override void Awake()
     {
@@ -74,9 +75,9 @@ public class PlayerCtrl : PMonoBehaviour
         this.playerAttackCtrl.Attack();
     }
 
-    public virtual void SpecialAttack(string skillName)
+    public virtual void SpecialAttack()
     {
-        this.playerAttackCtrl.Attack(skillName);
+        this.playerAttackCtrl.Attack(this.currentSpecialSkill);
     }
 
     public virtual void TurnRight()
@@ -94,4 +95,14 @@ public class PlayerCtrl : PMonoBehaviour
         this.playerPlaneCtrl.planeAnimator.Idle();
     }
 
+
+    public virtual void RegisOnSkillCoolDown(Action<float, float> onCoolDown)
+    {
+        this.playerAttackCtrl.RegisOnSkillCoolDown(this.currentSpecialSkill, onCoolDown);
+    }
+
+    public virtual void UnRegisOnSkillCoolDown(Action<float, float> onCoolDown)
+    {
+        this.playerAttackCtrl.UnRegisOnSkillCoolDown(this.currentSpecialSkill, onCoolDown);
+    }
 }

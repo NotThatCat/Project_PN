@@ -67,6 +67,7 @@ public abstract class Spawner : PMonoBehaviour
 
     public virtual Transform Spawn(Transform prefab, Vector3 spawnPos, Quaternion rotation)
     {
+
         Transform newPrefab = this.GetObjectFromPool(prefab);
         newPrefab.SetPositionAndRotation(spawnPos, rotation);
 

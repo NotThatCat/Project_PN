@@ -10,36 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be78565e99523ac448cc8f9e6c5dcf64, type: 3}
-  m_Name: TestSkill
+  m_Name: m1_eP01
   m_EditorClassIdentifier: 
-  image: {fileID: 1849093819, guid: 57ff084e106b0bd478a98de76fe2557a, type: 3}
-  skillType: 3
+  image: {fileID: 0}
+  skillType: 0
+  delayOnStart: 0.75
   useDelay: 0
   delayScaleWithLevel: 1
-  baseDelay: 0
+  baseDelay: 0.5
   minDelay: 0
-  maxDelay: 0
+  maxDelay: 1.25
   useCoolDown: 1
   coolDownScaleWithLevel: 0
-  baseCoolDown: 4
-  minCoolDown: 4
-  maxCoolDown: 7
+  baseCoolDown: 1.5
+  minCoolDown: 0.75
+  maxCoolDown: 1.5
   soundID: 4
   soundName: DefaultSound
   effectName: DefaulEffect
-  damage: 3
-  loopAttack: 0
-  bulletName: PBullet29
-  isSpearAttack: 1
-  spearNumbers: 6
-  bulletRotaFixed: 0.05
-  isBurstAttack: 1
+  damage: 1
+  loopAttack: 1
+  bulletName: EBullet3
+  isSpearAttack: 0
+  spearNumbers: 3
+  bulletRotaFixed: 0.2
+  isBurstAttack: 0
   useBaseDelay: 0
   burstDelayScaleWithLevel: 0
   burstNumber: 3
-  burstDelay: 0.04
-  isRandomCoolDown: 0
-  minRanCoolDown: 2
-  maxRanCoolDown: 5
+  burstDelay: 0.03
+  isRandomCoolDown: 1
+  minRanCoolDown: 1.5
+  maxRanCoolDown: 3
   stackAble: 0
   maxStack: 2

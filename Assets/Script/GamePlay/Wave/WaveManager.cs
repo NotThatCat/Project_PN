@@ -9,7 +9,6 @@ public class WaveManager : PMonoBehaviour
     [SerializeField] protected List<WaveData> waveDatas;
     [SerializeField] protected List<Transform> waveList;
     [SerializeField] protected List<StateWave> currentStateWave;
-    [SerializeField] protected List<WaveCtrl> waveCtrls;
     [SerializeField] public int currentWave = 0;
     [SerializeField] protected bool isRunningWave = false;
     [SerializeField] protected bool loopState = true;
@@ -65,7 +64,7 @@ public class WaveManager : PMonoBehaviour
 
         foreach (StateWave state in states)
         {
-            this.CreateWave(state.waveId);
+            this.SpawnWave(state.waveId);
             this.currentStateWave.Add(state);
         }
     }
@@ -90,16 +89,28 @@ public class WaveManager : PMonoBehaviour
         return null;
     }
 
-    protected virtual void CreateWave(WAVE_ID waveId)
+    protected virtual void SpawnWave(WAVE_ID waveId)
     {
+        if (this.waveHolder.Find(waveId.ToString()) != null) return;
+
         Transform newWave = new GameObject(waveId.ToString(), typeof(WaveCtrl)).transform;
         newWave.transform.parent = this.waveHolder;
+        newWave.gameObject.SetActive(false);
 
         WaveCtrl wctrl = newWave.GetComponent<WaveCtrl>();
         wctrl.CreateWave(waveId);
 
-        this.waveCtrls.Add(wctrl);
         this.waveList.Add(newWave);
+    }
+
+    public virtual void DeSpawnWave(WAVE_ID waveId)
+    {
+        Transform wave = this.waveHolder.Find(waveId.ToString());
+        if (wave == null) return;
+
+        WaveCtrl wctrl = wave.GetComponent<WaveCtrl>();
+        wctrl.ResetWave();
+        wave.gameObject.SetActive(false);
     }
 
     protected virtual IEnumerator ProcessingWave()
@@ -108,15 +119,15 @@ public class WaveManager : PMonoBehaviour
         this.waveTime = 0;
         this.nextWaveTime = this.waveTime;
 
-        for (int i = 0; i < this.waveCtrls.Count; i++)
+        for (int i = 0; i < this.currentStateWave.Count; i++)
         {
-            while(this.currentStateWave[i].spawnAt > this.waveTime)
+            while (this.currentStateWave[i].spawnAt > this.waveTime)
             {
-                this.waveTime += processDelay;
-                yield return new WaitForSeconds(processDelay);
+                this.waveTime += this.processDelay;
+                yield return new WaitForSeconds(this.processDelay);
             }
 
-            this.waveCtrls[i].StartSpawning();
+            this.StartSpawning(this.currentStateWave[i].waveId.ToString());
         }
 
         if (this.loopState)
@@ -127,18 +138,6 @@ public class WaveManager : PMonoBehaviour
         this.waveTime = 0;
     }
 
-    protected virtual WaveCtrl GetWaveCtrl(WAVE_ID waveId)
-    {
-        foreach (StateWave sw in this.currentStateWave)
-        {
-            if (sw.waveId == waveId)
-            {
-                return this.waveCtrls[this.currentStateWave.IndexOf(sw)];
-            }
-        }
-        return null;
-    }
-
     protected virtual void ResetWave()
     {
         foreach (Transform wave in this.waveList)
@@ -147,7 +146,6 @@ public class WaveManager : PMonoBehaviour
         }
 
         this.waveList = new List<Transform>();
-        this.waveCtrls = new List<WaveCtrl>();
         this.currentStateWave = new List<StateWave>();
     }
 
@@ -159,8 +157,10 @@ public class WaveManager : PMonoBehaviour
 
     protected virtual void ResetWaveStatus()
     {
-        foreach (WaveCtrl wctrl in this.waveCtrls)
+        foreach (Transform waveObj in this.waveList)
         {
+            waveObj.gameObject.SetActive(false);
+            WaveCtrl wctrl = waveObj.GetComponent<WaveCtrl>();
             wctrl.ResetWave();
         }
     }
@@ -169,4 +169,14 @@ public class WaveManager : PMonoBehaviour
     {
 
     }
+
+    protected virtual void StartSpawning(string waveID)
+    {
+        Transform wave = this.waveHolder.Find(waveID);
+        wave.gameObject.SetActive(true);
+        WaveCtrl waveCtrl = wave.GetComponent<WaveCtrl>();
+        waveCtrl.StartSpawning();
+
+    }
+
 }

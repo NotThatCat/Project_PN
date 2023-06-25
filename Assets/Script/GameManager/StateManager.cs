@@ -142,6 +142,8 @@ public class StateManager : PMonoBehaviour
         }
         this.SortWave();
         WaveManager.instance.LoadStateWave(this.currentStateWave);
+        //...
+        //WaveManager.instance.LoadStateWave(this.stateList[this.currentStateIndex].stateWaves);
     }
 
     protected virtual void LoadStateWave(int state)

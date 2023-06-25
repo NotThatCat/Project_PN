@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class AttackCtrl : PMonoBehaviour
 {
-    [SerializeField] protected List<SkillCtrl> skillCtrls;
+    [SerializeField] protected List<Skill> skillCtrls;
     [SerializeField] protected int defaultSkill = 0;
     [SerializeField] protected int currentSkill;
     [SerializeField] protected bool toogleDefaultAttack = true;
@@ -27,17 +27,17 @@ public abstract class AttackCtrl : PMonoBehaviour
 
     protected virtual void LoadSkills()
     {
-        this.skillCtrls = new List<SkillCtrl>();
+        this.skillCtrls = new List<Skill>();
         foreach (Transform skill in transform)
         {
-            SkillCtrl skillProcessCtrl = skill.GetComponent<SkillCtrl>();
+            Skill skillProcessCtrl = skill.GetComponent<Skill>();
             if (skillProcessCtrl != null)
             {
-                skillCtrls.Add(skill.GetComponent<SkillCtrl>());
+                skillCtrls.Add(skill.GetComponent<Skill>());
             }
         }
 
-        if (this.skillCtrls.Count <= 0) this.LogError("SkillCtrl not found");
+        if (this.skillCtrls.Count <= 0) this.LogError("Skill not found");
     }
 
     /// <summary>
@@ -119,17 +119,17 @@ public abstract class AttackCtrl : PMonoBehaviour
 
     public virtual Sprite GetCurrentSkillImage()
     {
-        return this.GetCurrentSkillCtrl().GetSkillImage();
+        return this.GetCurrentSkill().GetSkillImage();
     }
 
-    public virtual SkillCtrl GetCurrentSkillCtrl()
+    public virtual Skill GetCurrentSkill()
     {
         return this.skillCtrls[this.currentSkill];
     }
 
     public virtual void StopAllSkill()
     {
-        foreach (SkillCtrl skill in this.skillCtrls)
+        foreach (Skill skill in this.skillCtrls)
         {
             this.StopSkill(skill);
         }
@@ -137,13 +137,13 @@ public abstract class AttackCtrl : PMonoBehaviour
 
     public virtual void StopAllSkillType(SKILL_TYPE skillType = SKILL_TYPE.DEFAULT)
     {
-        foreach (SkillCtrl sk in this.skillCtrls)
+        foreach (Skill sk in this.skillCtrls)
         {
             sk.StopSkillType(skillType);
         }
     }
 
-    public virtual void StopSkill(SkillCtrl skill)
+    public virtual void StopSkill(Skill skill)
     {
         skill.StopAttack();
     }
@@ -168,7 +168,7 @@ public abstract class AttackCtrl : PMonoBehaviour
     public override void ResetValue()
     {
         base.ResetValue();
-        foreach (SkillCtrl skill in this.skillCtrls) { skill.ResetValue(); }
+        foreach (Skill skill in this.skillCtrls) { skill.ResetValue(); }
         this.defaultSkill = this.GetDefaultSkill();
         this.currentSkill = this.defaultSkill;
         this.toogleDefaultAttack = true;
