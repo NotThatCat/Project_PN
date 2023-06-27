@@ -78,3 +78,5 @@ MonoBehaviour:
   speed: 6
   baseMovingSpeed: 0
   acceleration: []
+  minDelayOnStart: 0.75
+  maxDelayOnStart: 2

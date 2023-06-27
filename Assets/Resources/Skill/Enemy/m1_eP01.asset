@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   skillType: 0
-  delayOnStart: 0.75
   useDelay: 0
   delayScaleWithLevel: 1
   baseDelay: 0.5

@@ -38,3 +38,5 @@ MonoBehaviour:
     startSpeed: 1
     acceleration: 2
     maxSpeed: 2
+  minDelayOnStart: 0
+  maxDelayOnStart: 0

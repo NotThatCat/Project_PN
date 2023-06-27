@@ -20,6 +20,7 @@ public abstract class Skill : PMonoBehaviour
 
     [SerializeField] protected bool playSound = false;
 
+    [SerializeField] protected float delayOnStart = 0f;
     [SerializeField] protected float finalDelay = 0f;
     [SerializeField] protected float finalCoolDown = 0f;
 
@@ -167,9 +168,7 @@ public abstract class Skill : PMonoBehaviour
     protected virtual IEnumerator AttackProcess(bool loop)
     {
         this.attackInProgress = true;
-
-        yield return new WaitForSeconds(this.skillSO.delayOnStart);
-
+            
         do
         {
             //////////////// Delay
@@ -296,7 +295,6 @@ public abstract class Skill : PMonoBehaviour
         if (this.finalDelay > this.skillSO.maxDelay) this.finalDelay = this.skillSO.maxDelay;
         if (this.finalDelay < this.skillSO.minDelay) this.finalDelay = this.skillSO.minDelay;
     }
-
     protected virtual void CalculateFinalCoolDown()
     {
         if (this.skillSO.isRandomCoolDown)

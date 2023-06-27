@@ -16,4 +16,7 @@ public class EnemyData : ScriptableObject
     [SerializeField] public float speed;
     [SerializeField] public float baseMovingSpeed;
     [SerializeField] public List<AccelerationData> acceleration;
+    [Header("Attack")]
+    [SerializeField] public float minDelayOnStart = 1f;
+    [SerializeField] public float maxDelayOnStart = 1f;
 }

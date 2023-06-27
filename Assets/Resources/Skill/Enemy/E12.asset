@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be78565e99523ac448cc8f9e6c5dcf64, type: 3}
   m_Name: E12
   m_EditorClassIdentifier: 
+  image: {fileID: 0}
+  skillType: 0
   useDelay: 0
   delayScaleWithLevel: 1
   baseDelay: 0
@@ -39,3 +41,5 @@ MonoBehaviour:
   isRandomCoolDown: 1
   minRanCoolDown: 2
   maxRanCoolDown: 5
+  stackAble: 0
+  maxStack: 2

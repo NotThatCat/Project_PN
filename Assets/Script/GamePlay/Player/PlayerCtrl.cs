@@ -11,6 +11,7 @@ public class PlayerCtrl : PMonoBehaviour
     [SerializeField] public PlayerPlaneCtrl playerPlaneCtrl;
     [SerializeField] public Level level;
     [SerializeField] protected string currentSpecialSkill = "TestSkill";
+    [SerializeField] protected float delayBeforeAttack = 1f;
 
     protected override void Awake()
     {
@@ -18,16 +19,12 @@ public class PlayerCtrl : PMonoBehaviour
         PlayerCtrl.instance = this;
     }
 
-    public virtual int GetMaxLevel()
+    protected override void OnEnable()
     {
-        return this.level.maxLevel;
+        TimerManager.Instance.StartTimer(this.delayBeforeAttack, this.playerAttackCtrl.DefaultAttack);
     }
 
-    public virtual int GetCurrentLevel()
-    {
-        return this.level.level;
-    }
-
+    #region LoadData
     protected override void LoadComponents()
     {
         base.LoadComponents();
@@ -35,11 +32,6 @@ public class PlayerCtrl : PMonoBehaviour
         this.LoadPlayerMoving();
         this.LoadPlayerAttack();
         this.LoadLevel();
-    }
-
-    protected virtual void LoadLevel()
-    {
-        this.level = transform.GetComponentInChildren<Level>();
     }
 
     protected virtual void LoadPlayerPlaneCtrl()
@@ -56,6 +48,12 @@ public class PlayerCtrl : PMonoBehaviour
     {
         this.playerAttackCtrl = transform.GetComponentInChildren<PlayerAttackCtrl>();
     }
+
+    protected virtual void LoadLevel()
+    {
+        this.level = transform.GetComponentInChildren<Level>();
+    }
+    #endregion
 
     public virtual void ChangeSkill(string skillName)
     {
@@ -95,6 +93,15 @@ public class PlayerCtrl : PMonoBehaviour
         this.playerPlaneCtrl.planeAnimator.Idle();
     }
 
+    public virtual int GetMaxLevel()
+    {
+        return this.level.maxLevel;
+    }
+
+    public virtual int GetCurrentLevel()
+    {
+        return this.level.level;
+    }
 
     public virtual void RegisOnSkillCoolDown(Action<float, float> onCoolDown)
     {

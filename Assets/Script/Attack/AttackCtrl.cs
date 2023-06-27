@@ -46,7 +46,7 @@ public abstract class AttackCtrl : PMonoBehaviour
     protected override void Start()
     {
         base.FixedUpdate();
-        this.DefaultAttack();
+        //this.DefaultAttack();
     }
 
     public virtual void DefaultAttack()

@@ -8,7 +8,6 @@ public class SkillSO : ScriptableObject
     [SerializeField] public Sprite image;
     [SerializeField] public SKILL_TYPE skillType = SKILL_TYPE.DEFAULT;
     [Header("Attack Delay")]
-    [SerializeField] public float delayOnStart = 0f;
     [SerializeField] public bool useDelay = false;
     [SerializeField] public bool delayScaleWithLevel = true;
     [SerializeField] public float baseDelay = 0f;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: E3
   m_EditorClassIdentifier: 
   image: {fileID: 0}
+  skillType: 0
   useDelay: 0
   delayScaleWithLevel: 1
   baseDelay: 0.5
@@ -40,3 +41,5 @@ MonoBehaviour:
   isRandomCoolDown: 1
   minRanCoolDown: 1.5
   maxRanCoolDown: 3
+  stackAble: 0
+  maxStack: 2

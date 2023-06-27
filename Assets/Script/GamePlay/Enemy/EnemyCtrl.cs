@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyCtrl : PMonoBehaviour
@@ -10,6 +11,7 @@ public class EnemyCtrl : PMonoBehaviour
     [SerializeField] public Level level;
     [SerializeField] public EnemyData enemyData;
     [SerializeField] public EnemyAttackCtrl enemyAttackCtrl;
+    [SerializeField] protected int timerID;
 
     #region LoadData
     protected override void LoadComponents()
@@ -69,14 +71,28 @@ public class EnemyCtrl : PMonoBehaviour
 
     public virtual List<DropRate> GetDrop()
     {
-        if(enemyData == null) return null;
-        if(enemyData.dropList != null) return enemyData.dropList;
+        if (enemyData == null) return null;
+        if (enemyData.dropList != null) return enemyData.dropList;
         return null;
     }
 
     public virtual void StartDefaultAttack()
     {
         if (this.enemyAttackCtrl == null) return;
-        this.enemyAttackCtrl.DefaultAttack();
+        if (this.enemyData.minDelayOnStart > 0)
+        {
+            float finalDelayOnStart = UnityEngine.Random.Range(this.enemyData.minDelayOnStart, this.enemyData.maxDelayOnStart);
+            this.timerID = TimerManager.Instance.StartTimer(finalDelayOnStart, this.enemyAttackCtrl.DefaultAttack);
+        }
+        else
+        {
+            this.enemyAttackCtrl.DefaultAttack();
+        }
     }
+
+    protected override void OnDisable()
+    {
+        TimerManager.Instance.StopTimer(timerID);
+    }
+
 }

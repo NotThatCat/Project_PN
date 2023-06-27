@@ -22,3 +22,5 @@ MonoBehaviour:
   speed: 3
   baseMovingSpeed: 0
   acceleration: []
+  minDelayOnStart: 1
+  maxDelayOnStart: 3
